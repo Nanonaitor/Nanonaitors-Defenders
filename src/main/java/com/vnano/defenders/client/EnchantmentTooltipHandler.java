@@ -27,7 +27,6 @@ public final class EnchantmentTooltipHandler {
         if (Loader.isModLoaded("enchdesc")) return;
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(event.getItemStack());
         addDescription(event, enchantments, ModEnchantments.FOOTWORK, "enchantment.defenders.footwork.desc");
-        addDescription(event, enchantments, ModEnchantments.FORTIFICATION, "enchantment.defenders.fortification.desc");
         addDescription(event, enchantments, ModEnchantments.REPRISAL, "enchantment.defenders.reprisal.desc");
         addDescription(event, enchantments, ModEnchantments.FINESSE, "enchantment.defenders.finesse.desc");
         addDescription(event, enchantments, ModEnchantments.REFLEXES, "enchantment.defenders.reflexes.desc");

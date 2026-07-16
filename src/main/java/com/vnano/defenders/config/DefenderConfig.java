@@ -14,17 +14,23 @@ public final class DefenderConfig {
     public static int parryWindowTicks = 20, parryRecoveryTicks = 10, debuffDurationTicks = 40;
     public static int perfectParryDurabilityCost = 2, guardedHitDurabilityCost = 1, mainHandHitDurabilityCost = 1;
     public static float guardedReduction = .30F, maximumGuardedReduction = .95F;
-    public static float fortificationReductionPerLevel = .05F, movementPenalty = .50F;
+    public static float movementPenalty = .50F;
     public static float vulnerabilityMultiplier = 2F, parryKnockbackStrength = .8F;
     public static float finesseDamagePerLevel = .5F;
-    public static float deflectionReductionPerLevel = .10F, perfectParrySoundVolume = .8F;
+    public static float deflectionReductionPerLevel = .10F, deflectionMeleeReductionPerLevel = .05F;
+    public static float perfectParrySoundVolume = .8F;
+    public static float woodMovementPenaltyReduction = .10F;
+    public static float stoneParryKnockbackBonus = .20F;
+    public static float steelGuardedReductionBonus = .05F;
+    public static float goldAttackSpeedBonus = .20F;
+    public static int diamondDebuffDurationBonusTicks = 20;
     public static float sixthSenseAutoParryChance = .10F;
     public static int reflexesWindowTicksPerLevel = 2;
     public static int sixthSenseGlowDurationTicks = 100;
     public static double mainHandAttackSpeed = 1.8D;
     public static boolean allowAttackingWhileBlocking = true;
     public static boolean enableAllDefenderEnchantments = true;
-    public static boolean enableFootwork = true, enableFortification = true;
+    public static boolean enableFootwork = true;
     public static boolean enableReprisal = true, enableFinesse = true;
     public static boolean enableReflexes = true, enableDeflection = true, enableSixthSense = true;
 
@@ -61,6 +67,30 @@ public final class DefenderConfig {
         return OFFHAND_DAMAGE.containsKey(tier) ? OFFHAND_DAMAGE.get(tier) : tier.offhandBonus;
     }
 
+    public static double getMainHandAttackSpeed(DefenderTier tier) {
+        return mainHandAttackSpeed + (tier == DefenderTier.GOLD ? goldAttackSpeedBonus : 0D);
+    }
+
+    public static float getMovementPenalty(DefenderTier tier) {
+        return Math.max(0F, movementPenalty
+            - (tier == DefenderTier.WOOD ? woodMovementPenaltyReduction : 0F));
+    }
+
+    public static float getParryKnockbackStrength(DefenderTier tier) {
+        return parryKnockbackStrength
+            + (tier == DefenderTier.STONE ? stoneParryKnockbackBonus : 0F);
+    }
+
+    public static float getGuardedReduction(DefenderTier tier) {
+        return guardedReduction
+            + (tier == DefenderTier.STEEL ? steelGuardedReductionBonus : 0F);
+    }
+
+    public static int getDebuffDurationTicks(DefenderTier tier) {
+        return debuffDurationTicks
+            + (tier == DefenderTier.DIAMOND ? diamondDebuffDurationBonusTicks : 0);
+    }
+
     public static boolean isAdditionalEnchantmentAllowed(Enchantment enchantment) {
         if (enchantment == null || enchantment.getRegistryName() == null) return false;
         String id = enchantment.getRegistryName().toString();
@@ -74,7 +104,6 @@ public final class DefenderConfig {
         if (!enableAllDefenderEnchantments) return false;
         switch (id) {
             case "footwork": return enableFootwork;
-            case "fortification": return enableFortification;
             case "reprisal": return enableReprisal;
             case "finesse": return enableFinesse;
             case "reflexes": return enableReflexes;
@@ -92,7 +121,6 @@ public final class DefenderConfig {
         debuffDurationTicks = c.getInt("debuffDurationTicks", "combat", 40, 1, 1200, "Slowness and Vulnerable duration.");
         guardedReduction = c.getFloat("guardedDamageReduction", "combat", .30F, 0F, 1F, "Base reduction after the parry window.");
         maximumGuardedReduction = c.getFloat("maximumGuardedReduction", "combat", .95F, 0F, 1F, "Maximum guarded reduction.");
-        fortificationReductionPerLevel = c.getFloat("fortificationReductionPerLevel", "combat", .05F, 0F, 1F, "Reduction added per Fortification level.");
         movementPenalty = c.getFloat("movementSpeedPenalty", "combat", .50F, 0F, .95F, "Movement penalty while blocking.");
         vulnerabilityMultiplier = c.getFloat("vulnerabilityMultiplier", "combat", 2F, 1F, 20F, "Personal Vulnerable damage multiplier.");
         parryKnockbackStrength = c.getFloat("parryKnockbackStrength", "combat", .8F, 0F, 5F, "Perfect-parry knockback.");
@@ -101,7 +129,9 @@ public final class DefenderConfig {
         reflexesWindowTicksPerLevel = c.getInt("reflexesWindowTicksPerLevel", "enchantments", 2, 0, 100,
             "Ticks added to the perfect-parry window per Reflexes level.");
         deflectionReductionPerLevel = c.getFloat("deflectionReductionPerLevel", "enchantments", .10F, 0F, 1F,
-            "Guarded reduction from every non-void damage source per Deflection level.");
+            "Guarded reduction per Deflection level for damage not using the normal melee guard.");
+        deflectionMeleeReductionPerLevel = c.getFloat("deflectionMeleeReductionPerLevel", "enchantments", .05F, 0F, 1F,
+            "Reduction per Deflection level when stacked with normal direct-melee guarding.");
         sixthSenseAutoParryChance = c.getFloat("sixthSenseAutoParryChance", "enchantments", .10F, 0F, 1F,
             "Chance for 6th Sense to auto-parry an otherwise damaging direct-melee attack.");
         sixthSenseGlowDurationTicks = c.getInt("sixthSenseGlowDurationTicks", "enchantments", 100, 1, 72000,
@@ -111,7 +141,6 @@ public final class DefenderConfig {
         enableAllDefenderEnchantments = c.getBoolean("enableAllDefenderEnchantments", "enchantments", true,
             "Master switch for every Defender enchantment. Disabled enchants do not generate or provide effects.");
         enableFootwork = c.getBoolean("enableFootwork", "enchantments", true, "Enable Footwork generation and effects.");
-        enableFortification = c.getBoolean("enableFortification", "enchantments", true, "Enable Fortification generation and effects.");
         enableReprisal = c.getBoolean("enableReprisal", "enchantments", true, "Enable Reprisal generation and effects.");
         enableFinesse = c.getBoolean("enableFinesse", "enchantments", true, "Enable Finesse generation and effects.");
         enableReflexes = c.getBoolean("enableReflexes", "enchantments", true, "Enable Reflexes generation and effects.");
@@ -122,6 +151,17 @@ public final class DefenderConfig {
             "Flat melee damage added per Finesse level while its Defender is equipped off hand.");
         mainHandAttackSpeed = Math.round(c.get("weapon_stats", "mainHandAttackSpeed", 1.8D,
             "Main-hand Defender attack speed.", .1D, 20D).getDouble() * 100D) / 100D;
+
+        woodMovementPenaltyReduction = c.getFloat("woodMovementPenaltyReduction", "material_traits", .10F,
+            0F, .95F, "Reduction to Wood's normal blocking movement penalty.");
+        stoneParryKnockbackBonus = c.getFloat("stoneParryKnockbackBonus", "material_traits", .20F,
+            0F, 5F, "Knockback strength added to Stone perfect parries.");
+        goldAttackSpeedBonus = c.getFloat("goldAttackSpeedBonus", "material_traits", .20F,
+            0F, 20F, "Main-hand attack speed added to Gold.");
+        diamondDebuffDurationBonusTicks = c.getInt("diamondDebuffDurationBonusTicks", "material_traits", 20,
+            0, 72000, "Ticks added to Diamond's Slowness and Vulnerable duration.");
+        steelGuardedReductionBonus = c.getFloat("steelGuardedReductionBonus", "material_traits", .05F,
+            0F, 1F, "Sustained guarded reduction added to Steel when its base guard applies.");
 
         perfectParryDurabilityCost = c.getInt("perfectParryCost", "durability", 2, 0, 100, "Perfect-parry durability cost.");
         guardedHitDurabilityCost = c.getInt("guardedHitCost", "durability", 1, 0, 100, "Guarded-hit durability cost.");
@@ -182,11 +222,19 @@ public final class DefenderConfig {
             OFFHAND_DAMAGE.put(tier, c.get("weapon_stats", tier.id + "OffhandBonus", tier.offhandBonus,
                 "Flat offhand melee bonus.", 0D, 1024D).getDouble());
         }
-        boolean removedProjectileOption = false;
+        boolean removedLegacyOptions = false;
         if (c.hasKey("damage_types", "blockProjectiles")) {
             c.getCategory("damage_types").remove("blockProjectiles");
-            removedProjectileOption = true;
+            removedLegacyOptions = true;
         }
-        if (removedProjectileOption || c.hasChanged()) c.save();
+        if (c.hasKey("combat", "fortificationReductionPerLevel")) {
+            c.getCategory("combat").remove("fortificationReductionPerLevel");
+            removedLegacyOptions = true;
+        }
+        if (c.hasKey("enchantments", "enableFortification")) {
+            c.getCategory("enchantments").remove("enableFortification");
+            removedLegacyOptions = true;
+        }
+        if (removedLegacyOptions || c.hasChanged()) c.save();
     }
 }

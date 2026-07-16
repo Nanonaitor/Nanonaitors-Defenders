@@ -10,7 +10,7 @@ public enum DefenderTier {
     SILVER("silver", 460, 2.25D, 5.5D, 16, CompatFamily.SPARTAN, "ore:ingotSilver"),
     BRONZE("bronze", 200, 1.5D, 6.0D, 12, CompatFamily.SPARTAN, "ore:ingotBronze"),
     STEEL("steel", 480, 2.5D, 6.5D, 14, CompatFamily.SPARTAN, "ore:ingotSteel"),
-    UMBRIUM("umbrium", 320, 2.0D, 6.0D, 14, CompatFamily.DEFILED, "defiledlands:umbrium_ingot"),
+    UMBRIUM("umbrium", 320, 2.0D, 6.0D, 20, CompatFamily.DEFILED, "defiledlands:umbrium_ingot"),
 
     DRAGONBONE("dragonbone", 1660, 3.25D, 8.0D, 22, CompatFamily.ICE_AND_FIRE, "iceandfire:dragonbone"),
     FLAMED_DRAGONBONE("flamed_dragonbone", 2000, 3.5D, 9.5D, 22, CompatFamily.FIRE_DRAGONBONE, "iceandfire:dragonbone"),

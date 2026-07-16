@@ -43,12 +43,30 @@ nearest 0.5. Every value and attack speed can be changed in the config.
 | Living | 4 | 12 |
 | Sentient | 4.5 | 16 |
 
+## Material identities
+
+- Wood has a 40% movement penalty while blocking instead of the normal 50%.
+- Stone perfect parries use 1.0 knockback strength instead of the normal 0.8.
+- Gold retains vanilla Gold's high 22 enchantability and attacks at 2.0 speed
+  instead of the normal 1.8.
+- Iron is the neutral baseline without an additional material trait.
+- Diamond perfect-parry Slowness and Vulnerable last 3 seconds instead of 2.
+- Bronze remains a durable middle step between Stone and Iron.
+- Silver retains its anti-undead effects described below.
+- Steel reduces sustained permitted damage by 35% instead of the normal 30%.
+- Umbrium matches Defiled Lands tools' high 20 enchantability and otherwise
+  retains Iron-equivalent combat stats.
+- Dragonbone, dragon-blooded, Myrmex, Living, and Sentient Defenders retain
+  their existing high-tier and compatibility effects described below.
+
+Material-trait bonuses have individual values in the `material_traits` config
+category. Setting a bonus to zero disables that trait without removing items.
+
 ## Optional compatibility
 
 - Silver adds 2 main-hand damage against undead and perfect parries deal 1
   damage to undead attackers.
-- All Myrmex variants add 4 main-hand damage against non-arthropods and retain
-  Ice and Fire's separate Death Worm handling.
+- All Myrmex variants add 4 main-hand damage against non-anthropods and Death Worms.
 - Dragon-blooded variants apply their native fire, frozen, or chain-lightning
   behavior on main-hand hits and perfect parries.
 - Desert and Jungle Myrmex Stinger variants apply Poison III for 10 seconds on
@@ -66,14 +84,14 @@ nearest 0.5. Every value and attack speed can be changed in the config.
 
 ## Enchantments
 
-- Footwork I-III raises blocking movement speed to 60%, 70%, and 80%.
-- Fortification I-III adds 5 percentage points of guarded reduction per level.
+- Footwork I-III removes 10 percentage points of movement penalty per level.
+  Normal Defenders reach 60%, 70%, and 80% speed; Wood reaches 70%, 80%, and 90%.
 - Reprisal I-III adds its level as damage to the next melee hit after a parry.
 - Finesse I-III adds 0.5 melee damage per level while its Defender is equipped
   in the off hand. Finesse has Rare enchantment weight.
 - Reflexes I-III adds 2 ticks to the perfect-parry window per level.
-- Deflection I-III disables perfect parries and reduces all non-void damage by
-  10% per level while blocking.
+- Deflection I-III adds 5% per level to normal melee guarding or reduces other
+  damage by 10% per level while blocking. Perfect parries remain available.
 - 6th Sense I has a 10% chance to auto-parry direct melee attacks while a
   Defender is equipped off hand. Any successful parry makes the attacker glow
   for 5 seconds.
@@ -92,7 +110,6 @@ nearest 0.5. Every value and attack speed can be changed in the config.
     /give @p defenders:defender_flamed_dragonbone
     /give @p defenders:defender_living
     /enchant @p defenders:footwork 3
-    /enchant @p defenders:fortification 3
     /enchant @p defenders:reprisal 3
     /enchant @p defenders:finesse 3
     /enchant @p defenders:reflexes 3

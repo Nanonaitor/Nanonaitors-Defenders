@@ -95,7 +95,6 @@ public final class DefenderCombatHandler {
 
         if (blocking
             && isAllowedDamage(event.getSource())
-            && deflection == 0
             && elapsed >= 0
             && elapsed <= effectiveParryWindow
             && now >= data.getLong(NBT_PARRY_READY)) {
@@ -171,8 +170,9 @@ public final class DefenderCombatHandler {
         if (old != null) speed.removeModifier(old);
         if (isBlockingWithDefender(player)) {
             ItemStack defender = player.getHeldItemOffhand();
+            DefenderTier tier = ((ItemDefender) defender.getItem()).getTier();
             int footwork = ModEnchantments.getLevel(ModEnchantments.FOOTWORK, defender);
-            double penalty = Math.max(0.0D, DefenderConfig.movementPenalty - footwork * 0.10D);
+            double penalty = Math.max(0.0D, DefenderConfig.getMovementPenalty(tier) - footwork * 0.10D);
             double intendedFactor = Math.max(0.0D, Math.min(1.0D, 1.0D - penalty));
             double compensation = intendedFactor / VANILLA_ACTIVE_ITEM_MOVEMENT_FACTOR - 1.0D;
             if (Math.abs(compensation) > 0.0001D) {
@@ -201,14 +201,16 @@ public final class DefenderCombatHandler {
 
         ItemStack stack = defender.getHeldItemOffhand();
         if (!(stack.getItem() instanceof ItemDefender)) return;
+        DefenderTier tier = ((ItemDefender) stack.getItem()).getTier();
         boolean baseAllowed = isAllowedDamage(source);
         int deflection = ModEnchantments.getLevel(ModEnchantments.DEFLECTION, stack);
         if (!baseAllowed && deflection <= 0) return;
-        int fortification = ModEnchantments.getLevel(ModEnchantments.FORTIFICATION, stack);
-        float reduction = deflection * DefenderConfig.deflectionReductionPerLevel;
+        float deflectionPerLevel = isDirectMelee(source)
+            ? DefenderConfig.deflectionMeleeReductionPerLevel
+            : DefenderConfig.deflectionReductionPerLevel;
+        float reduction = deflection * deflectionPerLevel;
         if (baseAllowed) {
-            reduction += DefenderConfig.guardedReduction
-                + fortification * DefenderConfig.fortificationReductionPerLevel;
+            reduction += DefenderConfig.getGuardedReduction(tier);
         }
         reduction = Math.min(DefenderConfig.maximumGuardedReduction, reduction);
         event.setAmount(event.getAmount() * (1.0F - reduction));
@@ -248,15 +250,16 @@ public final class DefenderCombatHandler {
                                           DefenderTier tier, int reprisal,
                                           boolean applyGlow, long now) {
         if (attacker != null) {
-            attacker.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, DefenderConfig.debuffDurationTicks, 2));
-            attacker.addPotionEffect(new PotionEffect(ModContent.VULNERABLE, DefenderConfig.debuffDurationTicks, 0));
+            int debuffDuration = DefenderConfig.getDebuffDurationTicks(tier);
+            attacker.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, debuffDuration, 2));
+            attacker.addPotionEffect(new PotionEffect(ModContent.VULNERABLE, debuffDuration, 0));
             if (applyGlow) {
                 attacker.addPotionEffect(new PotionEffect(MobEffects.GLOWING,
                     DefenderConfig.sixthSenseGlowDurationTicks, 0));
             }
             NBTTagCompound attackerData = attacker.getEntityData();
             attackerData.setUniqueId(NBT_VULNERABLE_BY, defender.getUniqueID());
-            attackerData.setLong(NBT_VULNERABLE_UNTIL, now + DefenderConfig.debuffDurationTicks);
+            attackerData.setLong(NBT_VULNERABLE_UNTIL, now + debuffDuration);
             CompatEffects.applyPerfectParry(tier, attacker, defender);
         }
 
@@ -269,7 +272,7 @@ public final class DefenderCombatHandler {
         if (attacker != null) {
             double dx = defender.posX - attacker.posX;
             double dz = defender.posZ - attacker.posZ;
-            attacker.knockBack(defender, DefenderConfig.parryKnockbackStrength, dx, dz);
+            attacker.knockBack(defender, DefenderConfig.getParryKnockbackStrength(tier), dx, dz);
         }
         defender.world.playSound(null, defender.posX, defender.posY, defender.posZ,
             SoundEvents.BLOCK_NOTE_CHIME, SoundCategory.PLAYERS,

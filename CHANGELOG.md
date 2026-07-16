@@ -2,6 +2,14 @@
 
 ## 1.1.0 - Enchantments and modpack configuration
 
+- Added distinct configurable material traits: faster Wood guarding, stronger
+  Stone parry knockback, faster Gold attacks, longer Diamond parry debuffs, and
+  stronger Steel sustained guarding.
+- Gold retains enchantability 22, and Umbrium now matches Defiled Lands'
+  enchantability 20 while keeping Iron-equivalent combat stats.
+- Documented every material identity in the player-facing README without adding
+  more in-game tooltip lines.
+- Shortened Myrmex and Myrmex Stinger effect descriptions for readability.
 - Added the very rare 6th Sense I enchantment.
 - 6th Sense has a configurable 10% chance to auto-parry an otherwise damaging
   direct-melee attack while its Defender is equipped off hand.
@@ -11,13 +19,14 @@
 - 6th Sense cannot auto-parry projectiles and is incompatible with Deflection.
 - Added a dedicated configuration switch for 6th Sense availability.
 - Added a master switch for all Defender enchantments.
-- Added individual enable switches for Footwork, Fortification, Reprisal,
+- Added individual enable switches for Footwork, Reprisal,
   Finesse, Reflexes, Deflection, and 6th Sense.
 - Disabled enchantments no longer generate on books or enchanting tables and
   provide no effects, while remaining registered for save compatibility.
 - Added Reflexes I-III, extending the perfect-parry window by two ticks per level.
-- Added Deflection I-III, reducing all non-void damage by 10% per level while
-  blocking but disabling perfect parries.
+- Added Deflection I-III, adding 5% reduction per level to normal melee guard
+  or reducing other damage by 10% per level while blocking. Deflection retains
+  normal perfect parries.
 - Made Reflexes and Deflection mutually incompatible.
 - Projectiles can no longer be enabled for perfect parries through configuration.
 - Added configurable perfect-parry sound volume.
@@ -26,6 +35,8 @@
 - Confirmed and retained vanilla Unbreaking support.
 - Added optional So Many Enchantments Advanced Mending compatibility by
   registry ID, without making the mod a required dependency.
+- Removed Fortification and safely ignore its legacy missing registry mapping.
+- Preserved the Defender's raised guard pose in third person during attacks and mining.
 
 ## 1.0.1 - Guarded attack fix
 

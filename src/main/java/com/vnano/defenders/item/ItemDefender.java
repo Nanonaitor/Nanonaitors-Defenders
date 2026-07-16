@@ -96,7 +96,8 @@ public final class ItemDefender extends Item {
             modifiers.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(),
                 new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", DefenderConfig.getMainHandDamage(tier) - 1.0D, 0));
             modifiers.put(SharedMonsterAttributes.ATTACK_SPEED.getName(),
-                new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", DefenderConfig.mainHandAttackSpeed - 4.0D, 0));
+                new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier",
+                    DefenderConfig.getMainHandAttackSpeed(tier) - 4.0D, 0));
         }
         return modifiers;
     }
@@ -174,8 +175,7 @@ public final class ItemDefender extends Item {
                 value(DefenderConfig.silverUndeadParryDamage));
         }
         if (tier.isMyrmex() && DefenderConfig.enableMyrmexCreatureDamage) {
-            addEffect(tooltip, "tooltip.defenders.myrmex", value(DefenderConfig.myrmexNonArthropodBonus),
-                value(DefenderConfig.myrmexDeathWormBonus));
+            addEffect(tooltip, "tooltip.defenders.myrmex", value(DefenderConfig.myrmexNonArthropodBonus));
         }
         if (tier.isVenom() && DefenderConfig.enableVenomParryPoison) {
             addEffect(tooltip, "tooltip.defenders.stinger", level(DefenderConfig.venomAmplifier),
