@@ -73,10 +73,11 @@ nearest 0.5. Every value and attack speed can be changed in the config.
   in the off hand. Finesse has Rare enchantment weight.
 - Reflexes I-III adds 2 ticks to the perfect-parry window per level.
 - Deflection I-III disables perfect parries and reduces all non-void damage by
-  10% per level while blocking. Reflexes and Deflection are incompatible.
+  10% per level while blocking.
 - 6th Sense I has a 10% chance to auto-parry direct melee attacks while a
   Defender is equipped off hand. Any successful parry makes the attacker glow
-  for 5 seconds. 6th Sense and Deflection are incompatible.
+  for 5 seconds.
+- Deflection cannot be combined with Reflexes or 6th Sense.
 - Unbreaking, Mending, and standard sword enchantments are supported.
 - Descriptions appear on enchanted Defenders and enchanted books.
 - Modpack authors can add safe optional enchantment registry IDs through the

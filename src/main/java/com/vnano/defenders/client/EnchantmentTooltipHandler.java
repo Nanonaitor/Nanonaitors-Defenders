@@ -10,6 +10,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,6 +22,9 @@ public final class EnchantmentTooltipHandler {
 
     @SubscribeEvent
     public static void onTooltip(ItemTooltipEvent event) {
+        // Enchantment Descriptions reads the same localization keys itself.
+        // Keep this handler only as the fallback when that mod is absent.
+        if (Loader.isModLoaded("enchdesc")) return;
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(event.getItemStack());
         addDescription(event, enchantments, ModEnchantments.FOOTWORK, "enchantment.defenders.footwork.desc");
         addDescription(event, enchantments, ModEnchantments.FORTIFICATION, "enchantment.defenders.fortification.desc");
