@@ -42,11 +42,15 @@ public final class ModContent {
         ModEnchantments.FORTIFICATION = new EnchantmentDefender("fortification", Enchantment.Rarity.UNCOMMON, 3);
         ModEnchantments.REPRISAL = new EnchantmentDefender("reprisal", Enchantment.Rarity.RARE, 3);
         ModEnchantments.FINESSE = new EnchantmentDefender("finesse", Enchantment.Rarity.RARE, 3);
+        ModEnchantments.REFLEXES = new EnchantmentDefender("reflexes", Enchantment.Rarity.UNCOMMON, 3);
+        ModEnchantments.DEFLECTION = new EnchantmentDefender("deflection", Enchantment.Rarity.RARE, 3);
         event.getRegistry().registerAll(
             ModEnchantments.FOOTWORK,
             ModEnchantments.FORTIFICATION,
             ModEnchantments.REPRISAL,
-            ModEnchantments.FINESSE
+            ModEnchantments.FINESSE,
+            ModEnchantments.REFLEXES,
+            ModEnchantments.DEFLECTION
         );
     }
 

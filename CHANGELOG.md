@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.0 - Defensive enchantments and configuration
+
+- Added Reflexes I-III, extending the perfect-parry window by two ticks per level.
+- Added Deflection I-III, reducing all non-void damage by 10% per level while
+  blocking but disabling perfect parries.
+- Made Reflexes and Deflection mutually incompatible.
+- Projectiles can no longer be enabled for perfect parries through configuration.
+- Added configurable perfect-parry sound volume.
+- Added a registry-ID allow-list for optional modpack enchantment compatibility.
+
 ## 1.0.2 - Durability enchantment compatibility
 
 - Added explicit vanilla Mending support for Defenders.

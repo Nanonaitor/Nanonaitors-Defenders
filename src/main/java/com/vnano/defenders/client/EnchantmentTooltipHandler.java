@@ -25,6 +25,8 @@ public final class EnchantmentTooltipHandler {
         addDescription(event, enchantments, ModEnchantments.FORTIFICATION, "enchantment.defenders.fortification.desc");
         addDescription(event, enchantments, ModEnchantments.REPRISAL, "enchantment.defenders.reprisal.desc");
         addDescription(event, enchantments, ModEnchantments.FINESSE, "enchantment.defenders.finesse.desc");
+        addDescription(event, enchantments, ModEnchantments.REFLEXES, "enchantment.defenders.reflexes.desc");
+        addDescription(event, enchantments, ModEnchantments.DEFLECTION, "enchantment.defenders.deflection.desc");
     }
 
     private static void addDescription(ItemTooltipEvent event, Map<Enchantment, Integer> enchantments,

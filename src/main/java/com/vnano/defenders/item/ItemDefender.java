@@ -144,7 +144,10 @@ public final class ItemDefender extends Item {
             || enchantment == ModEnchantments.FOOTWORK
             || enchantment == ModEnchantments.FORTIFICATION
             || enchantment == ModEnchantments.REPRISAL
-            || enchantment == ModEnchantments.FINESSE;
+            || enchantment == ModEnchantments.FINESSE
+            || enchantment == ModEnchantments.REFLEXES
+            || enchantment == ModEnchantments.DEFLECTION
+            || DefenderConfig.isAdditionalEnchantmentAllowed(enchantment);
     }
 
     @Override
@@ -161,9 +164,7 @@ public final class ItemDefender extends Item {
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
         tooltip.add(TextFormatting.AQUA + "Parry within 1 second of blocking.");
         tooltip.add(TextFormatting.BLUE + "Reduce Melee Damage When Blocking");
-        if (!DefenderConfig.blockAllDamage && !DefenderConfig.blockProjectiles) {
-            tooltip.add(TextFormatting.DARK_GRAY + "Cannot block ranged damage");
-        }
+        tooltip.add(TextFormatting.DARK_GRAY + "Cannot perfect-parry ranged damage");
         addMaterialEffectTooltips(tooltip);
         if (tier == DefenderTier.LIVING && DefenderConfig.showEvolutionProgress && stack.hasTagCompound()) {
             tooltip.add(TextFormatting.BLUE + "--->" + stack.getTagCompound().getInteger("srpkills"));

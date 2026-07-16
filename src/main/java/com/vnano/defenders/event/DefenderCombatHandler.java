@@ -85,10 +85,15 @@ public final class DefenderCombatHandler {
         long now = player.world.getTotalWorldTime();
         long elapsed = now - blockStart;
         ItemStack defenderStack = player.getHeldItemOffhand();
+        int deflection = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.DEFLECTION, defenderStack);
+        int reflexes = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.REFLEXES, defenderStack);
+        int effectiveParryWindow = DefenderConfig.parryWindowTicks
+            + reflexes * DefenderConfig.reflexesWindowTicksPerLevel;
 
         if (isAllowedDamage(event.getSource())
+            && deflection == 0
             && elapsed >= 0
-            && elapsed <= DefenderConfig.parryWindowTicks
+            && elapsed <= effectiveParryWindow
             && now >= data.getLong(NBT_PARRY_READY)
             && defenderStack.getItem() instanceof ItemDefender) {
             Entity sourceEntity = event.getSource().getTrueSource();
@@ -172,13 +177,20 @@ public final class DefenderCombatHandler {
         NBTTagCompound data = defender.getEntityData();
         boolean defenderWasActive = isBlockingWithDefender(defender)
             || data.getBoolean(NBT_BYPASSING_VANILLA_BLOCK);
-        if (!defenderWasActive || !isAllowedDamage(source)) return;
+        if (!defenderWasActive || isVoidDamage(source)) return;
 
         ItemStack stack = defender.getHeldItemOffhand();
         if (!(stack.getItem() instanceof ItemDefender)) return;
+        boolean baseAllowed = isAllowedDamage(source);
+        int deflection = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.DEFLECTION, stack);
+        if (!baseAllowed && deflection <= 0) return;
         int fortification = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FORTIFICATION, stack);
-        float reduction = Math.min(DefenderConfig.maximumGuardedReduction,
-            DefenderConfig.guardedReduction + fortification * DefenderConfig.fortificationReductionPerLevel);
+        float reduction = deflection * DefenderConfig.deflectionReductionPerLevel;
+        if (baseAllowed) {
+            reduction += DefenderConfig.guardedReduction
+                + fortification * DefenderConfig.fortificationReductionPerLevel;
+        }
+        reduction = Math.min(DefenderConfig.maximumGuardedReduction, reduction);
         event.setAmount(event.getAmount() * (1.0F - reduction));
         if (DefenderConfig.guardedHitDurabilityCost > 0) {
             stack.damageItem(DefenderConfig.guardedHitDurabilityCost, defender);
@@ -235,7 +247,8 @@ public final class DefenderCombatHandler {
             attacker.knockBack(defender, DefenderConfig.parryKnockbackStrength, dx, dz);
         }
         defender.world.playSound(null, defender.posX, defender.posY, defender.posZ,
-            SoundEvents.BLOCK_NOTE_CHIME, SoundCategory.PLAYERS, 0.8F, 1.7F);
+            SoundEvents.BLOCK_NOTE_CHIME, SoundCategory.PLAYERS,
+            DefenderConfig.perfectParrySoundVolume, 1.7F);
 
         if (defender.world instanceof WorldServer) {
             ((WorldServer) defender.world).spawnParticle(EnumParticleTypes.CRIT,
@@ -294,17 +307,20 @@ public final class DefenderCombatHandler {
     }
 
     private static boolean isAllowedDamage(DamageSource source) {
-        if (DamageSource.OUT_OF_WORLD == source || "outOfWorld".equals(source.getDamageType())) return false;
+        if (isVoidDamage(source) || source.isProjectile()) return false;
         if (DefenderConfig.blockAllDamage) return true;
         if (source.isUnblockable() && !DefenderConfig.blockArmorBypassing) return false;
         if (isDirectMelee(source)) return DefenderConfig.blockDirectMelee;
-        if (source.isProjectile()) return DefenderConfig.blockProjectiles;
         if (source.isExplosion()) return DefenderConfig.blockExplosions;
         if (source.isMagicDamage()) return DefenderConfig.blockMagic;
         if (source.isFireDamage()) return DefenderConfig.blockFire;
         if ("fall".equals(source.getDamageType())) return DefenderConfig.blockFall;
         if ("drown".equals(source.getDamageType())) return DefenderConfig.blockDrowning;
         return DefenderConfig.blockEnvironmental;
+    }
+
+    private static boolean isVoidDamage(DamageSource source) {
+        return DamageSource.OUT_OF_WORLD == source || "outOfWorld".equals(source.getDamageType());
     }
 
     private static boolean isDirectMelee(DamageSource source) {

@@ -4,6 +4,7 @@ import com.vnano.defenders.item.DefenderTier;
 import java.io.File;
 import java.util.EnumMap;
 import java.util.Map;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraftforge.common.config.Configuration;
 
 public final class DefenderConfig {
@@ -16,10 +17,12 @@ public final class DefenderConfig {
     public static float fortificationReductionPerLevel = .05F, movementPenalty = .50F;
     public static float vulnerabilityMultiplier = 2F, parryKnockbackStrength = .8F;
     public static float finesseDamagePerLevel = .5F;
+    public static float deflectionReductionPerLevel = .10F, perfectParrySoundVolume = .8F;
+    public static int reflexesWindowTicksPerLevel = 2;
     public static double mainHandAttackSpeed = 1.8D;
     public static boolean allowAttackingWhileBlocking = true;
 
-    public static boolean blockAllDamage, blockProjectiles, blockMagic, blockExplosions;
+    public static boolean blockAllDamage, blockMagic, blockExplosions;
     public static boolean blockFire, blockFall, blockDrowning, blockEnvironmental, blockArmorBypassing;
     public static boolean blockDirectMelee = true, retaliateAgainstIndirectAttacker;
 
@@ -40,6 +43,7 @@ public final class DefenderConfig {
     public static float dragonOpposedElementBonus = 13.5F, lightningDragonBonus = 6.75F;
     public static float elementalMainHandKnockback = 1F;
     public static int livingEffectDurationTicks = 100, immalleableAmplifier = 0, viralAmplifier = 0;
+    public static String[] additionalAllowedEnchantments = new String[0];
 
     private DefenderConfig() {}
 
@@ -49,6 +53,15 @@ public final class DefenderConfig {
 
     public static double getOffhandDamage(DefenderTier tier) {
         return OFFHAND_DAMAGE.containsKey(tier) ? OFFHAND_DAMAGE.get(tier) : tier.offhandBonus;
+    }
+
+    public static boolean isAdditionalEnchantmentAllowed(Enchantment enchantment) {
+        if (enchantment == null || enchantment.getRegistryName() == null) return false;
+        String id = enchantment.getRegistryName().toString();
+        for (String configured : additionalAllowedEnchantments) {
+            if (id.equalsIgnoreCase(configured.trim())) return true;
+        }
+        return false;
     }
 
     public static void load(File file) {
@@ -63,6 +76,14 @@ public final class DefenderConfig {
         movementPenalty = c.getFloat("movementSpeedPenalty", "combat", .50F, 0F, .95F, "Movement penalty while blocking.");
         vulnerabilityMultiplier = c.getFloat("vulnerabilityMultiplier", "combat", 2F, 1F, 20F, "Personal Vulnerable damage multiplier.");
         parryKnockbackStrength = c.getFloat("parryKnockbackStrength", "combat", .8F, 0F, 5F, "Perfect-parry knockback.");
+        perfectParrySoundVolume = c.getFloat("perfectParrySoundVolume", "combat", .8F, 0F, 4F,
+            "Volume of the perfect-parry confirmation sound; 0 disables it.");
+        reflexesWindowTicksPerLevel = c.getInt("reflexesWindowTicksPerLevel", "enchantments", 2, 0, 100,
+            "Ticks added to the perfect-parry window per Reflexes level.");
+        deflectionReductionPerLevel = c.getFloat("deflectionReductionPerLevel", "enchantments", .10F, 0F, 1F,
+            "Guarded reduction from every non-void damage source per Deflection level.");
+        additionalAllowedEnchantments = c.getStringList("additionalAllowedEnchantments", "enchantments",
+            new String[0], "Optional enchantment registry IDs allowed on Defenders, for example modid:enchantment.");
         allowAttackingWhileBlocking = c.getBoolean("allowAttackingWhileBlocking", "combat", true, "Allow attacks while blocking.");
         finesseDamagePerLevel = c.getFloat("finesseDamagePerLevel", "combat", .5F, 0F, 1024F,
             "Flat melee damage added per Finesse level while its Defender is equipped off hand.");
@@ -73,9 +94,9 @@ public final class DefenderConfig {
         guardedHitDurabilityCost = c.getInt("guardedHitCost", "durability", 1, 0, 100, "Guarded-hit durability cost.");
         mainHandHitDurabilityCost = c.getInt("mainHandHitCost", "durability", 1, 0, 100, "Main-hand hit durability cost.");
 
-        blockAllDamage = c.getBoolean("blockAllDamage", "damage_types", false, "Enable Defender logic for everything except void.");
+        blockAllDamage = c.getBoolean("blockAllDamage", "damage_types", false,
+            "Enable base Defender logic for everything except void and projectiles.");
         blockDirectMelee = c.getBoolean("blockDirectMelee", "damage_types", true, "Enable direct melee.");
-        blockProjectiles = c.getBoolean("blockProjectiles", "damage_types", false, "Enable projectiles.");
         blockMagic = c.getBoolean("blockMagic", "damage_types", false, "Enable magic.");
         blockExplosions = c.getBoolean("blockExplosions", "damage_types", false, "Enable explosions.");
         blockFire = c.getBoolean("blockFire", "damage_types", false, "Enable fire and lava.");
@@ -128,6 +149,11 @@ public final class DefenderConfig {
             OFFHAND_DAMAGE.put(tier, c.get("weapon_stats", tier.id + "OffhandBonus", tier.offhandBonus,
                 "Flat offhand melee bonus.", 0D, 1024D).getDouble());
         }
-        if (c.hasChanged()) c.save();
+        boolean removedProjectileOption = false;
+        if (c.hasKey("damage_types", "blockProjectiles")) {
+            c.getCategory("damage_types").remove("blockProjectiles");
+            removedProjectileOption = true;
+        }
+        if (removedProjectileOption || c.hasChanged()) c.save();
     }
 }

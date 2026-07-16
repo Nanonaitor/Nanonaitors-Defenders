@@ -4,7 +4,7 @@
   <img src="media/defenders-logo.png" alt="Defenders logo" width="256">
 </p>
 
-Version 1.0.2 of Nanonaitor's off-hand melee Defenders. The same JAR runs with
+Version 1.1.0 of Nanonaitor's off-hand melee Defenders. The same JAR runs with
 vanilla Forge or enables its optional RLCraft/Dregora materials when their mods
 and ingredients are present.
 
@@ -15,8 +15,8 @@ and ingredients are present.
 - Perfect parries apply Slowness III and personal Vulnerable for 40 ticks,
   knock back the attacker, play a sound/particle cue, and cost 2 durability.
 - Later permitted hits are reduced by 30% and cost 1 durability.
-- Only direct melee damage is permitted by default. The config can separately
-  enable projectiles, magic, explosions, fire, falling, drowning, other
+- Only direct melee damage is permitted by default. Projectiles can never be
+  perfectly parried. The config can separately enable magic, explosions, fire, falling, drowning, other
   environmental sources, armor-bypassing sources, or all non-void damage.
 - Blocking moves at 50% normal walking speed and still permits main-hand attacks.
 - Defenders can be used as fast, short main-hand weapons, but cannot guard from
@@ -71,8 +71,13 @@ nearest 0.5. Every value and attack speed can be changed in the config.
 - Reprisal I-III adds its level as damage to the next melee hit after a parry.
 - Finesse I-III adds 0.5 melee damage per level while its Defender is equipped
   in the off hand. Finesse has Rare enchantment weight.
+- Reflexes I-III adds 2 ticks to the perfect-parry window per level.
+- Deflection I-III disables perfect parries and reduces all non-void damage by
+  10% per level while blocking. Reflexes and Deflection are incompatible.
 - Unbreaking, Mending, and standard sword enchantments are supported.
 - Descriptions appear on enchanted Defenders and enchanted books.
+- Modpack authors can add safe optional enchantment registry IDs through the
+  `additionalAllowedEnchantments` configuration list.
 
 ## Test commands
 
@@ -83,6 +88,8 @@ nearest 0.5. Every value and attack speed can be changed in the config.
     /enchant @p defenders:fortification 3
     /enchant @p defenders:reprisal 3
     /enchant @p defenders:finesse 3
+    /enchant @p defenders:reflexes 3
+    /enchant @p defenders:deflection 3
 
 ## Build
 
@@ -93,7 +100,7 @@ Use Java 11 and the supplied Gradle wrapper:
 ```
 
 The distributable JAR is created at
-`build/libs/defenders-1.12.2-1.0.2.jar`.
+`build/libs/defenders-1.12.2-1.1.0.jar`.
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
