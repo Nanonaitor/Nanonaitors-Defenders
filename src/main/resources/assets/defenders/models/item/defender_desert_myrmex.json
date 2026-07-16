@@ -1,0 +1,14 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "defenders:items/defender_desert_myrmex"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "blocking": 1
+      },
+      "model": "defenders:item/defender_desert_myrmex_blocking"
+    }
+  ]
+}
