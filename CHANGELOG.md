@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0 - 6th Sense
+
+- Added the very rare 6th Sense I enchantment.
+- 6th Sense has a configurable 10% chance to auto-parry an otherwise damaging
+  direct-melee attack while its Defender is equipped off hand.
+- Manual and automatic parries with 6th Sense apply vanilla Glowing to the
+  attacker for a configurable 5 seconds.
+- Auto-parries use normal perfect-parry durability and recovery costs.
+- 6th Sense cannot auto-parry projectiles and is incompatible with Deflection.
+- Added a dedicated configuration switch for 6th Sense availability.
+
 ## 1.1.1 - Enchantment availability controls
 
 - Added a master switch for all Defender enchantments.

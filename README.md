@@ -4,7 +4,7 @@
   <img src="media/defenders-logo.png" alt="Defenders logo" width="256">
 </p>
 
-Version 1.1.1 of Nanonaitor's off-hand melee Defenders. The same JAR runs with
+Version 1.2.0 of Nanonaitor's off-hand melee Defenders. The same JAR runs with
 vanilla Forge or enables its optional RLCraft/Dregora materials when their mods
 and ingredients are present.
 
@@ -74,6 +74,9 @@ nearest 0.5. Every value and attack speed can be changed in the config.
 - Reflexes I-III adds 2 ticks to the perfect-parry window per level.
 - Deflection I-III disables perfect parries and reduces all non-void damage by
   10% per level while blocking. Reflexes and Deflection are incompatible.
+- 6th Sense I has a 10% chance to auto-parry direct melee attacks while a
+  Defender is equipped off hand. Any successful parry makes the attacker glow
+  for 5 seconds. 6th Sense and Deflection are incompatible.
 - Unbreaking, Mending, and standard sword enchantments are supported.
 - Descriptions appear on enchanted Defenders and enchanted books.
 - Modpack authors can add safe optional enchantment registry IDs through the
@@ -93,6 +96,7 @@ nearest 0.5. Every value and attack speed can be changed in the config.
     /enchant @p defenders:finesse 3
     /enchant @p defenders:reflexes 3
     /enchant @p defenders:deflection 3
+    /enchant @p defenders:sixth_sense 1
 
 ## Build
 
@@ -103,7 +107,7 @@ Use Java 11 and the supplied Gradle wrapper:
 ```
 
 The distributable JAR is created at
-`build/libs/defenders-1.12.2-1.1.1.jar`.
+`build/libs/defenders-1.12.2-1.2.0.jar`.
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 

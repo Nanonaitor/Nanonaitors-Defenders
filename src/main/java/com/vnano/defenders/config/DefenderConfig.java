@@ -18,13 +18,15 @@ public final class DefenderConfig {
     public static float vulnerabilityMultiplier = 2F, parryKnockbackStrength = .8F;
     public static float finesseDamagePerLevel = .5F;
     public static float deflectionReductionPerLevel = .10F, perfectParrySoundVolume = .8F;
+    public static float sixthSenseAutoParryChance = .10F;
     public static int reflexesWindowTicksPerLevel = 2;
+    public static int sixthSenseGlowDurationTicks = 100;
     public static double mainHandAttackSpeed = 1.8D;
     public static boolean allowAttackingWhileBlocking = true;
     public static boolean enableAllDefenderEnchantments = true;
     public static boolean enableFootwork = true, enableFortification = true;
     public static boolean enableReprisal = true, enableFinesse = true;
-    public static boolean enableReflexes = true, enableDeflection = true;
+    public static boolean enableReflexes = true, enableDeflection = true, enableSixthSense = true;
 
     public static boolean blockAllDamage, blockMagic, blockExplosions;
     public static boolean blockFire, blockFall, blockDrowning, blockEnvironmental, blockArmorBypassing;
@@ -77,6 +79,7 @@ public final class DefenderConfig {
             case "finesse": return enableFinesse;
             case "reflexes": return enableReflexes;
             case "deflection": return enableDeflection;
+            case "sixth_sense": return enableSixthSense;
             default: return false;
         }
     }
@@ -99,6 +102,10 @@ public final class DefenderConfig {
             "Ticks added to the perfect-parry window per Reflexes level.");
         deflectionReductionPerLevel = c.getFloat("deflectionReductionPerLevel", "enchantments", .10F, 0F, 1F,
             "Guarded reduction from every non-void damage source per Deflection level.");
+        sixthSenseAutoParryChance = c.getFloat("sixthSenseAutoParryChance", "enchantments", .10F, 0F, 1F,
+            "Chance for 6th Sense to auto-parry an otherwise damaging direct-melee attack.");
+        sixthSenseGlowDurationTicks = c.getInt("sixthSenseGlowDurationTicks", "enchantments", 100, 1, 72000,
+            "Glowing duration applied to an attacker on any parry while 6th Sense is equipped.");
         additionalAllowedEnchantments = c.getStringList("additionalAllowedEnchantments", "enchantments",
             new String[0], "Optional enchantment registry IDs allowed on Defenders, for example modid:enchantment.");
         enableAllDefenderEnchantments = c.getBoolean("enableAllDefenderEnchantments", "enchantments", true,
@@ -109,6 +116,7 @@ public final class DefenderConfig {
         enableFinesse = c.getBoolean("enableFinesse", "enchantments", true, "Enable Finesse generation and effects.");
         enableReflexes = c.getBoolean("enableReflexes", "enchantments", true, "Enable Reflexes generation and effects.");
         enableDeflection = c.getBoolean("enableDeflection", "enchantments", true, "Enable Deflection generation and effects.");
+        enableSixthSense = c.getBoolean("enableSixthSense", "enchantments", true, "Enable 6th Sense generation and effects.");
         allowAttackingWhileBlocking = c.getBoolean("allowAttackingWhileBlocking", "combat", true, "Allow attacks while blocking.");
         finesseDamagePerLevel = c.getFloat("finesseDamagePerLevel", "combat", .5F, 0F, 1024F,
             "Flat melee damage added per Finesse level while its Defender is equipped off hand.");

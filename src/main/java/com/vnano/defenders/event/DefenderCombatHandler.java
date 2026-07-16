@@ -77,41 +77,49 @@ public final class DefenderCombatHandler {
     public static void onLivingAttack(LivingAttackEvent event) {
         if (!(event.getEntityLiving() instanceof EntityPlayer)) return;
         EntityPlayer player = (EntityPlayer) event.getEntityLiving();
-        if (!isBlockingWithDefender(player)) return;
+        ItemStack defenderStack = player.getHeldItemOffhand();
+        if (!(defenderStack.getItem() instanceof ItemDefender)) return;
 
         NBTTagCompound data = player.getEntityData();
-        long blockStart = data.getLong(NBT_BLOCK_START);
         long now = player.world.getTotalWorldTime();
-        long elapsed = now - blockStart;
-        ItemStack defenderStack = player.getHeldItemOffhand();
+        boolean blocking = isBlockingWithDefender(player);
         int deflection = ModEnchantments.getLevel(ModEnchantments.DEFLECTION, defenderStack);
         int reflexes = ModEnchantments.getLevel(ModEnchantments.REFLEXES, defenderStack);
+        int sixthSense = ModEnchantments.getLevel(ModEnchantments.SIXTH_SENSE, defenderStack);
+        DefenderTier tier = ((ItemDefender) defenderStack.getItem()).getTier();
+        int reprisal = ModEnchantments.getLevel(ModEnchantments.REPRISAL, defenderStack);
+        long blockStart = data.getLong(NBT_BLOCK_START);
+        long elapsed = now - blockStart;
         int effectiveParryWindow = DefenderConfig.parryWindowTicks
             + reflexes * DefenderConfig.reflexesWindowTicksPerLevel;
 
-        if (isAllowedDamage(event.getSource())
+        if (blocking
+            && isAllowedDamage(event.getSource())
             && deflection == 0
             && elapsed >= 0
             && elapsed <= effectiveParryWindow
-            && now >= data.getLong(NBT_PARRY_READY)
-            && defenderStack.getItem() instanceof ItemDefender) {
+            && now >= data.getLong(NBT_PARRY_READY)) {
             Entity sourceEntity = event.getSource().getTrueSource();
             EntityLivingBase attacker = sourceEntity instanceof EntityLivingBase
                 && (isDirectMelee(event.getSource()) || DefenderConfig.retaliateAgainstIndirectAttacker)
                 ? (EntityLivingBase) sourceEntity : null;
-            DefenderTier tier = ((ItemDefender) defenderStack.getItem()).getTier();
-            int reprisal = ModEnchantments.getLevel(ModEnchantments.REPRISAL, defenderStack);
-
-            // Cancel before vanilla reaches its hurt feedback and damage pipeline.
-            event.setCanceled(true);
-            data.setLong(NBT_PARRY_READY, now + DefenderConfig.parryRecoveryTicks);
-            if (DefenderConfig.perfectParryDurabilityCost > 0) {
-                defenderStack.damageItem(DefenderConfig.perfectParryDurabilityCost, player);
-            }
-            applyPerfectParry(player, attacker, tier, reprisal, now);
+            performPerfectParry(event, player, defenderStack, attacker, tier, reprisal,
+                sixthSense > 0, now);
             return;
         }
 
+        if (deflection == 0
+            && sixthSense > 0
+            && event.getAmount() > 0F
+            && isDirectMelee(event.getSource())
+            && now >= data.getLong(NBT_PARRY_READY)
+            && player.getRNG().nextFloat() < DefenderConfig.sixthSenseAutoParryChance) {
+            EntityLivingBase attacker = (EntityLivingBase) event.getSource().getTrueSource();
+            performPerfectParry(event, player, defenderStack, attacker, tier, reprisal, true, now);
+            return;
+        }
+
+        if (!blocking) return;
         data.setBoolean(NBT_BYPASSING_VANILLA_BLOCK, true);
         player.resetActiveHand();
 
@@ -119,6 +127,19 @@ public final class DefenderCombatHandler {
         // original guard session so attacks cannot reset the parry window.
         data.setBoolean(NBT_BLOCKING, true);
         data.setLong(NBT_BLOCK_START, blockStart);
+    }
+
+    private static void performPerfectParry(LivingAttackEvent event, EntityPlayer player,
+                                            ItemStack defenderStack, EntityLivingBase attacker,
+                                            DefenderTier tier, int reprisal,
+                                            boolean applyGlow, long now) {
+        // Cancel before vanilla reaches its hurt feedback and damage pipeline.
+        event.setCanceled(true);
+        player.getEntityData().setLong(NBT_PARRY_READY, now + DefenderConfig.parryRecoveryTicks);
+        if (DefenderConfig.perfectParryDurabilityCost > 0) {
+            defenderStack.damageItem(DefenderConfig.perfectParryDurabilityCost, player);
+        }
+        applyPerfectParry(player, attacker, tier, reprisal, applyGlow, now);
     }
 
     @SubscribeEvent
@@ -224,10 +245,15 @@ public final class DefenderCombatHandler {
     }
 
     private static void applyPerfectParry(EntityPlayer defender, EntityLivingBase attacker,
-                                          DefenderTier tier, int reprisal, long now) {
+                                          DefenderTier tier, int reprisal,
+                                          boolean applyGlow, long now) {
         if (attacker != null) {
             attacker.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, DefenderConfig.debuffDurationTicks, 2));
             attacker.addPotionEffect(new PotionEffect(ModContent.VULNERABLE, DefenderConfig.debuffDurationTicks, 0));
+            if (applyGlow) {
+                attacker.addPotionEffect(new PotionEffect(MobEffects.GLOWING,
+                    DefenderConfig.sixthSenseGlowDurationTicks, 0));
+            }
             NBTTagCompound attackerData = attacker.getEntityData();
             attackerData.setUniqueId(NBT_VULNERABLE_BY, defender.getUniqueID());
             attackerData.setLong(NBT_VULNERABLE_UNTIL, now + DefenderConfig.debuffDurationTicks);

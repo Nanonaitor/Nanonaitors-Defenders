@@ -58,9 +58,12 @@ public final class EnchantmentDefender extends Enchantment {
     @Override
     public boolean canApplyTogether(Enchantment other) {
         ResourceLocation otherId = other.getRegistryName();
+        boolean thisNeedsParries = "reflexes".equals(id) || "sixth_sense".equals(id);
+        boolean otherNeedsParries = otherId != null
+            && ("reflexes".equals(otherId.getResourcePath()) || "sixth_sense".equals(otherId.getResourcePath()));
         boolean opposite = otherId != null && DefendersMod.MOD_ID.equals(otherId.getResourceDomain())
-            && (("reflexes".equals(id) && "deflection".equals(otherId.getResourcePath()))
-                || ("deflection".equals(id) && "reflexes".equals(otherId.getResourcePath())));
+            && ((thisNeedsParries && "deflection".equals(otherId.getResourcePath()))
+                || ("deflection".equals(id) && otherNeedsParries));
         return !opposite && super.canApplyTogether(other);
     }
 }

@@ -44,13 +44,15 @@ public final class ModContent {
         ModEnchantments.FINESSE = new EnchantmentDefender("finesse", Enchantment.Rarity.RARE, 3);
         ModEnchantments.REFLEXES = new EnchantmentDefender("reflexes", Enchantment.Rarity.UNCOMMON, 3);
         ModEnchantments.DEFLECTION = new EnchantmentDefender("deflection", Enchantment.Rarity.RARE, 3);
+        ModEnchantments.SIXTH_SENSE = new EnchantmentDefender("sixth_sense", Enchantment.Rarity.VERY_RARE, 1);
         event.getRegistry().registerAll(
             ModEnchantments.FOOTWORK,
             ModEnchantments.FORTIFICATION,
             ModEnchantments.REPRISAL,
             ModEnchantments.FINESSE,
             ModEnchantments.REFLEXES,
-            ModEnchantments.DEFLECTION
+            ModEnchantments.DEFLECTION,
+            ModEnchantments.SIXTH_SENSE
         );
     }
 
