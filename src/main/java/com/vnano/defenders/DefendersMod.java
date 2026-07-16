@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public final class DefendersMod {
     public static final String MOD_ID = "defenders";
     public static final String NAME = "Defenders";
-    public static final String VERSION = "1.1.0";
+    public static final String VERSION = "1.1.1";
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {

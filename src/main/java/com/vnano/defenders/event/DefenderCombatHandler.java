@@ -9,7 +9,6 @@ import com.vnano.defenders.item.ItemDefender;
 import com.vnano.defenders.item.DefenderTier;
 import com.vnano.defenders.registry.ModContent;
 import java.util.UUID;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -85,8 +84,8 @@ public final class DefenderCombatHandler {
         long now = player.world.getTotalWorldTime();
         long elapsed = now - blockStart;
         ItemStack defenderStack = player.getHeldItemOffhand();
-        int deflection = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.DEFLECTION, defenderStack);
-        int reflexes = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.REFLEXES, defenderStack);
+        int deflection = ModEnchantments.getLevel(ModEnchantments.DEFLECTION, defenderStack);
+        int reflexes = ModEnchantments.getLevel(ModEnchantments.REFLEXES, defenderStack);
         int effectiveParryWindow = DefenderConfig.parryWindowTicks
             + reflexes * DefenderConfig.reflexesWindowTicksPerLevel;
 
@@ -101,7 +100,7 @@ public final class DefenderCombatHandler {
                 && (isDirectMelee(event.getSource()) || DefenderConfig.retaliateAgainstIndirectAttacker)
                 ? (EntityLivingBase) sourceEntity : null;
             DefenderTier tier = ((ItemDefender) defenderStack.getItem()).getTier();
-            int reprisal = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.REPRISAL, defenderStack);
+            int reprisal = ModEnchantments.getLevel(ModEnchantments.REPRISAL, defenderStack);
 
             // Cancel before vanilla reaches its hurt feedback and damage pipeline.
             event.setCanceled(true);
@@ -151,7 +150,7 @@ public final class DefenderCombatHandler {
         if (old != null) speed.removeModifier(old);
         if (isBlockingWithDefender(player)) {
             ItemStack defender = player.getHeldItemOffhand();
-            int footwork = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FOOTWORK, defender);
+            int footwork = ModEnchantments.getLevel(ModEnchantments.FOOTWORK, defender);
             double penalty = Math.max(0.0D, DefenderConfig.movementPenalty - footwork * 0.10D);
             double intendedFactor = Math.max(0.0D, Math.min(1.0D, 1.0D - penalty));
             double compensation = intendedFactor / VANILLA_ACTIVE_ITEM_MOVEMENT_FACTOR - 1.0D;
@@ -182,9 +181,9 @@ public final class DefenderCombatHandler {
         ItemStack stack = defender.getHeldItemOffhand();
         if (!(stack.getItem() instanceof ItemDefender)) return;
         boolean baseAllowed = isAllowedDamage(source);
-        int deflection = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.DEFLECTION, stack);
+        int deflection = ModEnchantments.getLevel(ModEnchantments.DEFLECTION, stack);
         if (!baseAllowed && deflection <= 0) return;
-        int fortification = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FORTIFICATION, stack);
+        int fortification = ModEnchantments.getLevel(ModEnchantments.FORTIFICATION, stack);
         float reduction = deflection * DefenderConfig.deflectionReductionPerLevel;
         if (baseAllowed) {
             reduction += DefenderConfig.guardedReduction

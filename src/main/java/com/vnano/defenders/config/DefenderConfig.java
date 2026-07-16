@@ -21,6 +21,10 @@ public final class DefenderConfig {
     public static int reflexesWindowTicksPerLevel = 2;
     public static double mainHandAttackSpeed = 1.8D;
     public static boolean allowAttackingWhileBlocking = true;
+    public static boolean enableAllDefenderEnchantments = true;
+    public static boolean enableFootwork = true, enableFortification = true;
+    public static boolean enableReprisal = true, enableFinesse = true;
+    public static boolean enableReflexes = true, enableDeflection = true;
 
     public static boolean blockAllDamage, blockMagic, blockExplosions;
     public static boolean blockFire, blockFall, blockDrowning, blockEnvironmental, blockArmorBypassing;
@@ -64,6 +68,19 @@ public final class DefenderConfig {
         return false;
     }
 
+    public static boolean isDefenderEnchantmentEnabled(String id) {
+        if (!enableAllDefenderEnchantments) return false;
+        switch (id) {
+            case "footwork": return enableFootwork;
+            case "fortification": return enableFortification;
+            case "reprisal": return enableReprisal;
+            case "finesse": return enableFinesse;
+            case "reflexes": return enableReflexes;
+            case "deflection": return enableDeflection;
+            default: return false;
+        }
+    }
+
     public static void load(File file) {
         Configuration c = new Configuration(file);
         c.load();
@@ -84,6 +101,14 @@ public final class DefenderConfig {
             "Guarded reduction from every non-void damage source per Deflection level.");
         additionalAllowedEnchantments = c.getStringList("additionalAllowedEnchantments", "enchantments",
             new String[0], "Optional enchantment registry IDs allowed on Defenders, for example modid:enchantment.");
+        enableAllDefenderEnchantments = c.getBoolean("enableAllDefenderEnchantments", "enchantments", true,
+            "Master switch for every Defender enchantment. Disabled enchants do not generate or provide effects.");
+        enableFootwork = c.getBoolean("enableFootwork", "enchantments", true, "Enable Footwork generation and effects.");
+        enableFortification = c.getBoolean("enableFortification", "enchantments", true, "Enable Fortification generation and effects.");
+        enableReprisal = c.getBoolean("enableReprisal", "enchantments", true, "Enable Reprisal generation and effects.");
+        enableFinesse = c.getBoolean("enableFinesse", "enchantments", true, "Enable Finesse generation and effects.");
+        enableReflexes = c.getBoolean("enableReflexes", "enchantments", true, "Enable Reflexes generation and effects.");
+        enableDeflection = c.getBoolean("enableDeflection", "enchantments", true, "Enable Deflection generation and effects.");
         allowAttackingWhileBlocking = c.getBoolean("allowAttackingWhileBlocking", "combat", true, "Allow attacks while blocking.");
         finesseDamagePerLevel = c.getFloat("finesseDamagePerLevel", "combat", .5F, 0F, 1024F,
             "Flat melee damage added per Finesse level while its Defender is equipped off hand.");

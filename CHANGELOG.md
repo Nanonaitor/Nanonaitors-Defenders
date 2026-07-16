@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.1 - Enchantment availability controls
+
+- Added a master switch for all Defender enchantments.
+- Added individual enable switches for Footwork, Fortification, Reprisal,
+  Finesse, Reflexes, and Deflection.
+- Disabled enchantments no longer generate on books or enchanting tables and
+  provide no effects, while remaining registered for save compatibility.
+
 ## 1.1.0 - Defensive enchantments and configuration
 
 - Added Reflexes I-III, extending the perfect-parry window by two ticks per level.

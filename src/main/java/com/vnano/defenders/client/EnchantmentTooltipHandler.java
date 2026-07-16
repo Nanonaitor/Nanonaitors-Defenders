@@ -2,6 +2,7 @@ package com.vnano.defenders.client;
 
 import com.vnano.defenders.DefendersMod;
 import com.vnano.defenders.enchantment.ModEnchantments;
+import com.vnano.defenders.enchantment.EnchantmentDefender;
 import java.util.Map;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
@@ -31,7 +32,9 @@ public final class EnchantmentTooltipHandler {
 
     private static void addDescription(ItemTooltipEvent event, Map<Enchantment, Integer> enchantments,
                                        Enchantment enchantment, String key) {
-        if (enchantment != null && enchantments.containsKey(enchantment)) {
+        if (enchantment != null && enchantments.containsKey(enchantment)
+            && (!(enchantment instanceof EnchantmentDefender)
+                || ((EnchantmentDefender) enchantment).isEnabled())) {
             event.getToolTip().add(TextFormatting.DARK_GRAY + I18n.format(key));
         }
     }

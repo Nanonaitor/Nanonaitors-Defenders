@@ -1,6 +1,7 @@
 package com.vnano.defenders.enchantment;
 
 import com.vnano.defenders.DefendersMod;
+import com.vnano.defenders.config.DefenderConfig;
 import com.vnano.defenders.item.ItemDefender;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
@@ -35,14 +36,23 @@ public final class EnchantmentDefender extends Enchantment {
         return maxLevel;
     }
 
+    public boolean isEnabled() {
+        return DefenderConfig.isDefenderEnchantmentEnabled(id);
+    }
+
     @Override
     public boolean canApply(ItemStack stack) {
-        return stack.getItem() instanceof ItemDefender;
+        return isEnabled() && stack.getItem() instanceof ItemDefender;
     }
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack) {
         return canApply(stack);
+    }
+
+    @Override
+    public boolean isAllowedOnBooks() {
+        return isEnabled() && super.isAllowedOnBooks();
     }
 
     @Override

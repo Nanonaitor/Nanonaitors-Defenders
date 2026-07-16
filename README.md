@@ -4,7 +4,7 @@
   <img src="media/defenders-logo.png" alt="Defenders logo" width="256">
 </p>
 
-Version 1.1.0 of Nanonaitor's off-hand melee Defenders. The same JAR runs with
+Version 1.1.1 of Nanonaitor's off-hand melee Defenders. The same JAR runs with
 vanilla Forge or enables its optional RLCraft/Dregora materials when their mods
 and ingredients are present.
 
@@ -78,6 +78,9 @@ nearest 0.5. Every value and attack speed can be changed in the config.
 - Descriptions appear on enchanted Defenders and enchanted books.
 - Modpack authors can add safe optional enchantment registry IDs through the
   `additionalAllowedEnchantments` configuration list.
+- A master switch and individual configuration switches can disable Defender
+  enchantments from generation and deactivate their effects without removing
+  their registry entries from existing worlds.
 
 ## Test commands
 
@@ -100,7 +103,7 @@ Use Java 11 and the supplied Gradle wrapper:
 ```
 
 The distributable JAR is created at
-`build/libs/defenders-1.12.2-1.1.0.jar`.
+`build/libs/defenders-1.12.2-1.1.1.jar`.
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 

@@ -3,6 +3,7 @@ package com.vnano.defenders.item;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.vnano.defenders.enchantment.ModEnchantments;
+import com.vnano.defenders.enchantment.EnchantmentDefender;
 import com.vnano.defenders.compat.CompatEffects;
 import com.vnano.defenders.compat.CompatManager;
 import com.vnano.defenders.config.DefenderConfig;
@@ -15,7 +16,6 @@ import java.util.Locale;
 import javax.annotation.Nullable;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -107,7 +107,7 @@ public final class ItemDefender extends Item {
         if (slot == EntityEquipmentSlot.OFFHAND) {
             String attackDamage = SharedMonsterAttributes.ATTACK_DAMAGE.getName();
             modifiers.get(attackDamage).removeIf(modifier -> ATTACK_BONUS_UUID.equals(modifier.getID()));
-            int finesse = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.FINESSE, stack);
+            int finesse = ModEnchantments.getLevel(ModEnchantments.FINESSE, stack);
             double total = DefenderConfig.getOffhandDamage(tier) + finesse * DefenderConfig.finesseDamagePerLevel;
             modifiers.put(attackDamage,
                 new AttributeModifier(ATTACK_BONUS_UUID, "Defender melee bonus", total, 0));
@@ -141,12 +141,8 @@ public final class ItemDefender extends Item {
             || enchantment == Enchantments.FIRE_ASPECT
             || enchantment == Enchantments.LOOTING
             || enchantment == Enchantments.SWEEPING
-            || enchantment == ModEnchantments.FOOTWORK
-            || enchantment == ModEnchantments.FORTIFICATION
-            || enchantment == ModEnchantments.REPRISAL
-            || enchantment == ModEnchantments.FINESSE
-            || enchantment == ModEnchantments.REFLEXES
-            || enchantment == ModEnchantments.DEFLECTION
+            || (enchantment instanceof EnchantmentDefender
+                && ((EnchantmentDefender) enchantment).isEnabled())
             || DefenderConfig.isAdditionalEnchantmentAllowed(enchantment);
     }
 
