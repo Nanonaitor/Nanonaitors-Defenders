@@ -38,6 +38,8 @@ public final class ItemDefender extends Item {
     private static final DecimalFormat VALUE_FORMAT = new DecimalFormat("0.##",
         DecimalFormatSymbols.getInstance(Locale.ROOT));
     private static final UUID ATTACK_BONUS_UUID = UUID.fromString("3a9472fd-19f1-48be-a2b0-746796e68f51");
+    private static final ResourceLocation ADVANCED_MENDING =
+        new ResourceLocation("somanyenchantments", "advancedmending");
     private final DefenderTier tier;
 
     public ItemDefender(DefenderTier tier) {
@@ -130,6 +132,8 @@ public final class ItemDefender extends Item {
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return enchantment == Enchantments.UNBREAKING
+            || enchantment == Enchantments.MENDING
+            || ADVANCED_MENDING.equals(enchantment.getRegistryName())
             || enchantment == Enchantments.SHARPNESS
             || enchantment == Enchantments.SMITE
             || enchantment == Enchantments.BANE_OF_ARTHROPODS

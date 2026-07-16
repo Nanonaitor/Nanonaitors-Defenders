@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.2 - Durability enchantment compatibility
+
+- Added explicit vanilla Mending support for Defenders.
+- Confirmed and retained vanilla Unbreaking support.
+- Added optional So Many Enchantments Advanced Mending compatibility by
+  registry ID, without making the mod a required dependency.
+
 ## 1.0.1 - Guarded attack fix
 
 - Fixed entity attacks being suppressed while blocking with a Defender.
