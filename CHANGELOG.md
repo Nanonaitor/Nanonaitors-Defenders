@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.1 - Guarded attack fix
+
+- Fixed entity attacks being suppressed while blocking with a Defender.
+- Guarded attacks now use Minecraft's normal attack packets, cooldown damage,
+  enchantments, reach handling, and compatible combat hooks.
+- Fixed guarded hit and air-whiff swing behavior.
+- Added normal block breaking while guarding.
+- Removed the obsolete custom guarded-attack network path.
+
 ## 1.0.0 - Initial release
 
 - Added Wood, Stone, Gold, Iron, and Diamond Defenders.
