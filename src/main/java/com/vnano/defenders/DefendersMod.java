@@ -1,7 +1,6 @@
 package com.vnano.defenders;
 
 import com.vnano.defenders.config.DefenderConfig;
-import com.vnano.defenders.network.ModNetwork;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -19,6 +18,5 @@ public final class DefendersMod {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         DefenderConfig.load(event.getSuggestedConfigurationFile());
-        ModNetwork.init();
     }
 }
