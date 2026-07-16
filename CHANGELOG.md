@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.0 - 6th Sense
+## 1.1.0 - Enchantments and modpack configuration
 
 - Added the very rare 6th Sense I enchantment.
 - 6th Sense has a configurable 10% chance to auto-parry an otherwise damaging
@@ -10,17 +10,11 @@
 - Auto-parries use normal perfect-parry durability and recovery costs.
 - 6th Sense cannot auto-parry projectiles and is incompatible with Deflection.
 - Added a dedicated configuration switch for 6th Sense availability.
-
-## 1.1.1 - Enchantment availability controls
-
 - Added a master switch for all Defender enchantments.
 - Added individual enable switches for Footwork, Fortification, Reprisal,
-  Finesse, Reflexes, and Deflection.
+  Finesse, Reflexes, Deflection, and 6th Sense.
 - Disabled enchantments no longer generate on books or enchanting tables and
   provide no effects, while remaining registered for save compatibility.
-
-## 1.1.0 - Defensive enchantments and configuration
-
 - Added Reflexes I-III, extending the perfect-parry window by two ticks per level.
 - Added Deflection I-III, reducing all non-void damage by 10% per level while
   blocking but disabling perfect parries.
@@ -28,9 +22,6 @@
 - Projectiles can no longer be enabled for perfect parries through configuration.
 - Added configurable perfect-parry sound volume.
 - Added a registry-ID allow-list for optional modpack enchantment compatibility.
-
-## 1.0.2 - Durability enchantment compatibility
-
 - Added explicit vanilla Mending support for Defenders.
 - Confirmed and retained vanilla Unbreaking support.
 - Added optional So Many Enchantments Advanced Mending compatibility by
