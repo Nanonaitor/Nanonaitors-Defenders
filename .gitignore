@@ -2,23 +2,26 @@
 /.gradle/
 /build/
 /run/
+/run-data/
 /eclipse/
 /reobf/
 /mcmodsrepo/
+/src/generated/resources/.cache/
 
-# Minecraft development-instance data
+# Minecraft development data
 /config/
 /crash-reports/
 /logs/
 /saves/
 
-# Local dependency jars (the Gradle wrapper jar remains tracked)
+# Local dependency JARs (the Gradle wrapper JAR remains tracked)
 /libs/
 
 # IDE metadata
 /.idea/
 /.settings/
 /.vscode/
+/.metadata/
 /.classpath
 /.project
 /bin/
@@ -28,7 +31,7 @@
 *.iws
 *.launch
 
-# Logs, crash dumps, and temporary files
+# Logs, crash dumps, secrets, and temporary files
 *.log
 *.tmp
 *.bak

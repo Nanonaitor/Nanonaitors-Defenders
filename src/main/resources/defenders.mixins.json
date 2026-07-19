@@ -1,0 +1,9 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.vnano.defenders.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "defenders.refmap.json",
+  "client": ["client.MinecraftMixin"],
+  "injectors": {"defaultRequire": 1}
+}

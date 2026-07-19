@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","conditions":[{"type":"forge:mod_loaded","modid":"iceandfire"}],"category":"combat","pattern":[" V","SM"," M"],"key":{"V":{"item":"iceandfire:myrmex_stinger"},"M":{"item":"iceandfire:myrmex_desert_chitin"},"S":{"item":"minecraft:stick"}},"result":{"item":"defenders:defender_desert_venom"}}

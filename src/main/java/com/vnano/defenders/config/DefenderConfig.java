@@ -1,256 +1,184 @@
 package com.vnano.defenders.config;
 
 import com.vnano.defenders.item.DefenderTier;
-import java.io.File;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraftforge.common.config.Configuration;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public final class DefenderConfig {
-    private static final Map<DefenderTier, Double> MAIN_DAMAGE = new EnumMap<>(DefenderTier.class);
-    private static final Map<DefenderTier, Double> OFFHAND_DAMAGE = new EnumMap<>(DefenderTier.class);
-    private static final Map<DefenderTier, Double> OFFHAND_ATTACK_SPEED = new EnumMap<>(DefenderTier.class);
+    private static final ForgeConfigSpec.Builder B = new ForgeConfigSpec.Builder();
+    private static final Map<DefenderTier, ForgeConfigSpec.DoubleValue> MAIN_DAMAGE = new EnumMap<>(DefenderTier.class);
+    private static final Map<DefenderTier, ForgeConfigSpec.DoubleValue> OFFHAND_DAMAGE = new EnumMap<>(DefenderTier.class);
+    private static final Map<DefenderTier, ForgeConfigSpec.DoubleValue> OFFHAND_SPEED = new EnumMap<>(DefenderTier.class);
 
-    public static int parryWindowTicks = 20, parryRecoveryTicks = 10, debuffDurationTicks = 40;
-    public static int perfectParryDurabilityCost = 2, guardedHitDurabilityCost = 1, mainHandHitDurabilityCost = 1;
-    public static float guardedReduction = .30F, maximumGuardedReduction = .95F;
-    public static float movementPenalty = .50F;
-    public static float vulnerabilityMultiplier = 2F, parryKnockbackStrength = .8F;
-    public static float finesseDamagePerLevel = .5F;
-    public static float deflectionReductionPerLevel = .10F, deflectionMeleeReductionPerLevel = .05F;
-    public static float perfectParrySoundVolume = .8F;
-    public static float woodMovementPenaltyReduction = .10F;
-    public static float stoneParryKnockbackBonus = .20F;
-    public static float steelGuardedReductionBonus = .05F;
-    public static float goldAttackSpeedBonus = .20F;
-    public static int diamondDebuffDurationBonusTicks = 20;
-    public static float sixthSenseAutoParryChance = .10F;
-    public static int reflexesWindowTicksPerLevel = 2;
-    public static int sixthSenseGlowDurationTicks = 100;
-    public static double mainHandAttackSpeed = 1.8D;
-    public static boolean allowAttackingWhileBlocking = true;
-    public static boolean allowShieldDisabling = true;
-    public static boolean allowContinuousAttacksWhileBlocking = true;
-    public static boolean enableAllDefenderEnchantments = true;
-    public static boolean enableFootwork = true;
-    public static boolean enableReprisal = true, enableFinesse = true;
-    public static boolean enableReflexes = true, enableDeflection = true, enableSixthSense = true;
+    public static final ForgeConfigSpec.IntValue PARRY_TICKS;
+    public static final ForgeConfigSpec.IntValue PARRY_RECOVERY_TICKS;
+    public static final ForgeConfigSpec.IntValue DEBUFF_TICKS;
+    public static final ForgeConfigSpec.DoubleValue GUARDED_REDUCTION;
+    public static final ForgeConfigSpec.DoubleValue MAX_REDUCTION;
+    public static final ForgeConfigSpec.DoubleValue VULNERABILITY;
+    public static final ForgeConfigSpec.DoubleValue PARRY_KNOCKBACK;
+    public static final ForgeConfigSpec.DoubleValue BLOCK_MOVE_PENALTY;
+    public static final ForgeConfigSpec.DoubleValue PARRY_SOUND_VOLUME;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_ATTACKING_WHILE_BLOCKING;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SHIELD_DISABLING;
+    public static final ForgeConfigSpec.IntValue PARRY_DURABILITY_COST;
+    public static final ForgeConfigSpec.IntValue GUARDED_DURABILITY_COST;
+    public static final ForgeConfigSpec.IntValue MAINHAND_DURABILITY_COST;
 
-    public static boolean blockAllDamage, blockMagic, blockExplosions;
-    public static boolean blockFire, blockFall, blockDrowning, blockEnvironmental, blockArmorBypassing;
-    public static boolean blockDirectMelee = true, retaliateAgainstIndirectAttacker;
+    public static final ForgeConfigSpec.BooleanValue BLOCK_ALL_DAMAGE;
+    public static final ForgeConfigSpec.BooleanValue BLOCK_DIRECT_MELEE;
+    public static final ForgeConfigSpec.BooleanValue BLOCK_MAGIC;
+    public static final ForgeConfigSpec.BooleanValue BLOCK_EXPLOSIONS;
+    public static final ForgeConfigSpec.BooleanValue BLOCK_FIRE;
+    public static final ForgeConfigSpec.BooleanValue BLOCK_FALL;
+    public static final ForgeConfigSpec.BooleanValue BLOCK_DROWNING;
+    public static final ForgeConfigSpec.BooleanValue BLOCK_ENVIRONMENTAL;
+    public static final ForgeConfigSpec.BooleanValue BLOCK_ARMOR_BYPASSING;
 
-    public static boolean enableSpartanMaterials = true, enableDefiledLands = true;
-    public static boolean enableIceAndFire = true, enableSRParasites = true;
-    public static boolean enableSilverUndeadDamage = true, enableMyrmexCreatureDamage = true;
-    public static boolean enableVenomParryPoison = true, enableElementalMainHandEffects = true;
-    public static boolean enableElementalParryEffects = true, enableLivingParryEffects = true;
-    public static boolean followSrpEvolutionThreshold = true, requireParasiteKills = true;
-    public static boolean showEvolutionProgress = true;
-    public static int evolutionHealthOverride = 50000;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_ALL_ENCHANTMENTS;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_FOOTWORK;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_REPRISAL;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_FINESSE;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_REFLEXES;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_DEFLECTION;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_SIXTH_SENSE;
+    public static final ForgeConfigSpec.DoubleValue FINESSE_DAMAGE_PER_LEVEL;
+    public static final ForgeConfigSpec.IntValue REFLEXES_TICKS_PER_LEVEL;
+    public static final ForgeConfigSpec.DoubleValue DEFLECTION_REDUCTION_PER_LEVEL;
+    public static final ForgeConfigSpec.DoubleValue DEFLECTION_MELEE_REDUCTION_PER_LEVEL;
+    public static final ForgeConfigSpec.DoubleValue SIXTH_SENSE_CHANCE;
+    public static final ForgeConfigSpec.IntValue SIXTH_SENSE_GLOW_TICKS;
+    public static final ForgeConfigSpec.ConfigValue<List<? extends String>> ADDITIONAL_ENCHANTMENTS;
 
-    public static float silverUndeadMainHandBonus = 2F, silverUndeadParryDamage = 1F;
-    public static float myrmexNonArthropodBonus = 4F, myrmexDeathWormBonus = 4F;
-    public static int venomDurationTicks = 200, venomAmplifier = 2;
-    public static int flameDurationSeconds = 5, frozenDurationTicks = 200;
-    public static int iceDebuffDurationTicks = 100, iceDebuffAmplifier = 2;
-    public static float dragonOpposedElementBonus = 13.5F, lightningDragonBonus = 6.75F;
-    public static float elementalMainHandKnockback = 1F;
-    public static int livingEffectDurationTicks = 100, immalleableAmplifier = 0, viralAmplifier = 0;
-    public static String[] additionalAllowedEnchantments = new String[0];
+    public static final ForgeConfigSpec.DoubleValue WOOD_MOVEMENT_BONUS;
+    public static final ForgeConfigSpec.DoubleValue STONE_KNOCKBACK_BONUS;
+    public static final ForgeConfigSpec.DoubleValue GOLD_MAINHAND_SPEED_BONUS;
+    public static final ForgeConfigSpec.IntValue DIAMOND_DEBUFF_BONUS_TICKS;
+    public static final ForgeConfigSpec.DoubleValue STEEL_GUARD_BONUS;
+    public static final ForgeConfigSpec.DoubleValue MAINHAND_ATTACK_SPEED;
+
+    public static final ForgeConfigSpec.IntValue LIVING_EVOLUTION;
+    public static final ForgeConfigSpec.BooleanValue REQUIRE_PARASITE_KILLS;
+    public static final ForgeConfigSpec.BooleanValue SHOW_EVOLUTION_PROGRESS;
+
+    public static final ForgeConfigSpec SPEC;
+
+    static {
+        B.push("combat");
+        PARRY_TICKS = B.defineInRange("parryWindowTicks", 20, 1, 200);
+        PARRY_RECOVERY_TICKS = B.defineInRange("parryRecoveryTicks", 10, 0, 200);
+        DEBUFF_TICKS = B.defineInRange("debuffTicks", 40, 1, 72000);
+        GUARDED_REDUCTION = B.defineInRange("guardedReduction", .30, 0, .95);
+        MAX_REDUCTION = B.defineInRange("maximumReduction", .95, 0, .99);
+        VULNERABILITY = B.defineInRange("vulnerabilityMultiplier", 2.0, 1, 20);
+        PARRY_KNOCKBACK = B.defineInRange("parryKnockbackStrength", .8, 0, 5);
+        BLOCK_MOVE_PENALTY = B.defineInRange("blockingMovementPenalty", .50, 0, .95);
+        PARRY_SOUND_VOLUME = B.defineInRange("perfectParrySoundVolume", .8, 0, 4);
+        ALLOW_ATTACKING_WHILE_BLOCKING = B.define("allowAttackingWhileBlocking", true);
+        ALLOW_SHIELD_DISABLING = B.define("allowShieldDisabling", true);
+        B.pop();
+
+        B.push("durability");
+        PARRY_DURABILITY_COST = B.defineInRange("perfectParryCost", 2, 0, 100);
+        GUARDED_DURABILITY_COST = B.defineInRange("guardedHitCost", 1, 0, 100);
+        MAINHAND_DURABILITY_COST = B.defineInRange("mainHandHitCost", 1, 0, 100);
+        B.pop();
+
+        B.push("damage_types");
+        BLOCK_ALL_DAMAGE = B.comment("Enables base guarding for all supported non-projectile damage.").define("blockAllDamage", false);
+        BLOCK_DIRECT_MELEE = B.define("blockDirectMelee", true);
+        BLOCK_MAGIC = B.define("blockMagic", false);
+        BLOCK_EXPLOSIONS = B.define("blockExplosions", false);
+        BLOCK_FIRE = B.define("blockFire", false);
+        BLOCK_FALL = B.define("blockFall", false);
+        BLOCK_DROWNING = B.define("blockDrowning", false);
+        BLOCK_ENVIRONMENTAL = B.define("blockEnvironmental", false);
+        BLOCK_ARMOR_BYPASSING = B.define("blockArmorBypassing", false);
+        B.pop();
+
+        B.push("enchantments");
+        ENABLE_ALL_ENCHANTMENTS = B.define("enableAllDefenderEnchantments", true);
+        ENABLE_FOOTWORK = B.define("enableFootwork", true);
+        ENABLE_REPRISAL = B.define("enableReprisal", true);
+        ENABLE_FINESSE = B.define("enableFinesse", true);
+        ENABLE_REFLEXES = B.define("enableReflexes", true);
+        ENABLE_DEFLECTION = B.define("enableDeflection", true);
+        ENABLE_SIXTH_SENSE = B.define("enableSixthSense", true);
+        FINESSE_DAMAGE_PER_LEVEL = B.defineInRange("finesseDamagePerLevel", .5, 0, 1024);
+        REFLEXES_TICKS_PER_LEVEL = B.defineInRange("reflexesWindowTicksPerLevel", 2, 0, 100);
+        DEFLECTION_REDUCTION_PER_LEVEL = B.defineInRange("deflectionReductionPerLevel", .10, 0, 1);
+        DEFLECTION_MELEE_REDUCTION_PER_LEVEL = B.defineInRange("deflectionMeleeReductionPerLevel", .05, 0, 1);
+        SIXTH_SENSE_CHANCE = B.defineInRange("sixthSenseAutoParryChance", .10, 0, 1);
+        SIXTH_SENSE_GLOW_TICKS = B.defineInRange("sixthSenseGlowTicks", 100, 1, 72000);
+        ADDITIONAL_ENCHANTMENTS = B.defineListAllowEmpty(List.of("additionalAllowedEnchantments"), List::of,
+            value -> value instanceof String text && ResourceLocation.tryParse(text) != null);
+        B.pop();
+
+        B.push("material_traits");
+        WOOD_MOVEMENT_BONUS = B.defineInRange("woodMovementPenaltyReduction", .10, 0, .95);
+        STONE_KNOCKBACK_BONUS = B.defineInRange("stoneParryKnockbackBonus", .20, 0, 5);
+        GOLD_MAINHAND_SPEED_BONUS = B.defineInRange("goldMainHandAttackSpeedBonus", .20, 0, 20);
+        DIAMOND_DEBUFF_BONUS_TICKS = B.defineInRange("diamondDebuffDurationBonusTicks", 20, 0, 72000);
+        STEEL_GUARD_BONUS = B.defineInRange("steelGuardedReductionBonus", .05, 0, 1);
+        B.pop();
+
+        B.push("weapon_stats");
+        MAINHAND_ATTACK_SPEED = B.defineInRange("mainHandAttackSpeed", 1.8, .1, 20);
+        for (DefenderTier tier : DefenderTier.values()) {
+            MAIN_DAMAGE.put(tier, B.defineInRange(tier.id + "MainHandDamage", tier.mainHandDamage, 0, 1024));
+            OFFHAND_DAMAGE.put(tier, B.defineInRange(tier.id + "OffhandBonus", tier.offhandBonus, 0, 1024));
+            OFFHAND_SPEED.put(tier, B.defineInRange(tier.id + "OffhandAttackSpeed", tier.defaultOffhandAttackSpeed(), 0, 20));
+        }
+        B.pop();
+
+        B.push("evolution");
+        LIVING_EVOLUTION = B.defineInRange("livingEvolutionThreshold", 50000, 1, 100000000);
+        REQUIRE_PARASITE_KILLS = B.define("requireParasiteKills", true);
+        SHOW_EVOLUTION_PROGRESS = B.define("showEvolutionProgress", true);
+        B.pop();
+
+        SPEC = B.build();
+    }
+
+    public static double mainHandDamage(DefenderTier tier) { return MAIN_DAMAGE.get(tier).get(); }
+    public static double offhandDamage(DefenderTier tier) { return OFFHAND_DAMAGE.get(tier).get(); }
+    public static double offhandSpeed(DefenderTier tier) { return OFFHAND_SPEED.get(tier).get(); }
+    public static double mainHandSpeed(DefenderTier tier) {
+        return MAINHAND_ATTACK_SPEED.get() + (tier == DefenderTier.GOLD ? GOLD_MAINHAND_SPEED_BONUS.get() : 0);
+    }
+    public static double movementPenalty(DefenderTier tier) {
+        return Math.max(0, BLOCK_MOVE_PENALTY.get() - (tier == DefenderTier.WOOD ? WOOD_MOVEMENT_BONUS.get() : 0));
+    }
+    public static double knockback(DefenderTier tier) {
+        return PARRY_KNOCKBACK.get() + (tier == DefenderTier.STONE ? STONE_KNOCKBACK_BONUS.get() : 0);
+    }
+    public static int debuffTicks(DefenderTier tier) {
+        return DEBUFF_TICKS.get() + (tier == DefenderTier.DIAMOND ? DIAMOND_DEBUFF_BONUS_TICKS.get() : 0);
+    }
+    public static double guardedReduction(DefenderTier tier) {
+        return GUARDED_REDUCTION.get() + (tier == DefenderTier.STEEL ? STEEL_GUARD_BONUS.get() : 0);
+    }
+    public static boolean enchantmentEnabled(String id) {
+        if (!ENABLE_ALL_ENCHANTMENTS.get()) return false;
+        return switch (id) {
+            case "footwork" -> ENABLE_FOOTWORK.get();
+            case "reprisal" -> ENABLE_REPRISAL.get();
+            case "finesse" -> ENABLE_FINESSE.get();
+            case "reflexes" -> ENABLE_REFLEXES.get();
+            case "deflection" -> ENABLE_DEFLECTION.get();
+            case "sixth_sense" -> ENABLE_SIXTH_SENSE.get();
+            default -> false;
+        };
+    }
+    public static boolean additionalEnchantmentAllowed(Enchantment enchantment) {
+        ResourceLocation id = ForgeRegistries.ENCHANTMENTS.getKey(enchantment);
+        return id != null && ADDITIONAL_ENCHANTMENTS.get().stream().anyMatch(id.toString()::equalsIgnoreCase);
+    }
 
     private DefenderConfig() {}
-
-    public static double getMainHandDamage(DefenderTier tier) {
-        return MAIN_DAMAGE.containsKey(tier) ? MAIN_DAMAGE.get(tier) : tier.defaultMainHandDamage();
-    }
-
-    public static double getOffhandDamage(DefenderTier tier) {
-        return OFFHAND_DAMAGE.containsKey(tier) ? OFFHAND_DAMAGE.get(tier) : tier.offhandBonus;
-    }
-
-    public static double getOffhandAttackSpeed(DefenderTier tier) {
-        return OFFHAND_ATTACK_SPEED.containsKey(tier)
-            ? OFFHAND_ATTACK_SPEED.get(tier) : tier.defaultOffhandAttackSpeed();
-    }
-
-    public static double getMainHandAttackSpeed(DefenderTier tier) {
-        return mainHandAttackSpeed + (tier == DefenderTier.GOLD ? goldAttackSpeedBonus : 0D);
-    }
-
-    public static float getMovementPenalty(DefenderTier tier) {
-        return Math.max(0F, movementPenalty
-            - (tier == DefenderTier.WOOD ? woodMovementPenaltyReduction : 0F));
-    }
-
-    public static float getParryKnockbackStrength(DefenderTier tier) {
-        return parryKnockbackStrength
-            + (tier == DefenderTier.STONE ? stoneParryKnockbackBonus : 0F);
-    }
-
-    public static float getGuardedReduction(DefenderTier tier) {
-        return guardedReduction
-            + (tier == DefenderTier.STEEL ? steelGuardedReductionBonus : 0F);
-    }
-
-    public static int getDebuffDurationTicks(DefenderTier tier) {
-        return debuffDurationTicks
-            + (tier == DefenderTier.DIAMOND ? diamondDebuffDurationBonusTicks : 0);
-    }
-
-    public static boolean isAdditionalEnchantmentAllowed(Enchantment enchantment) {
-        if (enchantment == null || enchantment.getRegistryName() == null) return false;
-        String id = enchantment.getRegistryName().toString();
-        for (String configured : additionalAllowedEnchantments) {
-            if (id.equalsIgnoreCase(configured.trim())) return true;
-        }
-        return false;
-    }
-
-    public static boolean isDefenderEnchantmentEnabled(String id) {
-        if (!enableAllDefenderEnchantments) return false;
-        switch (id) {
-            case "footwork": return enableFootwork;
-            case "reprisal": return enableReprisal;
-            case "finesse": return enableFinesse;
-            case "reflexes": return enableReflexes;
-            case "deflection": return enableDeflection;
-            case "sixth_sense": return enableSixthSense;
-            default: return false;
-        }
-    }
-
-    public static void load(File file) {
-        Configuration c = new Configuration(file);
-        c.load();
-        parryWindowTicks = c.getInt("parryWindowTicks", "combat", 20, 1, 200, "Perfect-parry window in ticks.");
-        parryRecoveryTicks = c.getInt("parryRecoveryTicks", "combat", 10, 0, 200, "Cooldown before another perfect parry.");
-        debuffDurationTicks = c.getInt("debuffDurationTicks", "combat", 40, 1, 1200, "Slowness and Vulnerable duration.");
-        guardedReduction = c.getFloat("guardedDamageReduction", "combat", .30F, 0F, 1F, "Base reduction after the parry window.");
-        maximumGuardedReduction = c.getFloat("maximumGuardedReduction", "combat", .95F, 0F, 1F, "Maximum guarded reduction.");
-        movementPenalty = c.getFloat("movementSpeedPenalty", "combat", .50F, 0F, .95F, "Movement penalty while blocking.");
-        vulnerabilityMultiplier = c.getFloat("vulnerabilityMultiplier", "combat", 2F, 1F, 20F, "Personal Vulnerable damage multiplier.");
-        parryKnockbackStrength = c.getFloat("parryKnockbackStrength", "combat", .8F, 0F, 5F, "Perfect-parry knockback.");
-        perfectParrySoundVolume = c.getFloat("perfectParrySoundVolume", "combat", .8F, 0F, 4F,
-            "Volume of the perfect-parry confirmation sound; 0 disables it.");
-        reflexesWindowTicksPerLevel = c.getInt("reflexesWindowTicksPerLevel", "enchantments", 2, 0, 100,
-            "Ticks added to the perfect-parry window per Reflexes level.");
-        deflectionReductionPerLevel = c.getFloat("deflectionReductionPerLevel", "enchantments", .10F, 0F, 1F,
-            "Guarded reduction per Deflection level for damage not using the normal melee guard.");
-        deflectionMeleeReductionPerLevel = c.getFloat("deflectionMeleeReductionPerLevel", "enchantments", .05F, 0F, 1F,
-            "Reduction per Deflection level when stacked with normal direct-melee guarding.");
-        sixthSenseAutoParryChance = c.getFloat("sixthSenseAutoParryChance", "enchantments", .10F, 0F, 1F,
-            "Chance for 6th Sense to auto-parry an otherwise damaging direct-melee attack.");
-        sixthSenseGlowDurationTicks = c.getInt("sixthSenseGlowDurationTicks", "enchantments", 100, 1, 72000,
-            "Glowing duration applied to an attacker on any parry while 6th Sense is equipped.");
-        additionalAllowedEnchantments = c.getStringList("additionalAllowedEnchantments", "enchantments",
-            new String[0], "Optional enchantment registry IDs allowed on Defenders, for example modid:enchantment.");
-        enableAllDefenderEnchantments = c.getBoolean("enableAllDefenderEnchantments", "enchantments", true,
-            "Master switch for every Defender enchantment. Disabled enchants do not generate or provide effects.");
-        enableFootwork = c.getBoolean("enableFootwork", "enchantments", true, "Enable Footwork generation and effects.");
-        enableReprisal = c.getBoolean("enableReprisal", "enchantments", true, "Enable Reprisal generation and effects.");
-        enableFinesse = c.getBoolean("enableFinesse", "enchantments", true, "Enable Finesse generation and effects.");
-        enableReflexes = c.getBoolean("enableReflexes", "enchantments", true, "Enable Reflexes generation and effects.");
-        enableDeflection = c.getBoolean("enableDeflection", "enchantments", true, "Enable Deflection generation and effects.");
-        enableSixthSense = c.getBoolean("enableSixthSense", "enchantments", true, "Enable 6th Sense generation and effects.");
-        allowAttackingWhileBlocking = c.getBoolean("allowAttackingWhileBlocking", "combat", true, "Allow attacks while blocking.");
-        allowShieldDisabling = c.getBoolean("allowShieldDisabling", "combat", true,
-            "Allow shield-disabling weapons to disable an actively blocking Defender.");
-        allowContinuousAttacksWhileBlocking = c.getBoolean("allowContinuousAttacksWhileBlocking", "compatibility", true,
-            "Keep Better Survival and Everything Nunchaku held attacks active while blocking.");
-        finesseDamagePerLevel = c.getFloat("finesseDamagePerLevel", "combat", .5F, 0F, 1024F,
-            "Flat melee damage added per Finesse level while its Defender is equipped off hand.");
-        mainHandAttackSpeed = Math.round(c.get("weapon_stats", "mainHandAttackSpeed", 1.8D,
-            "Main-hand Defender attack speed.", .1D, 20D).getDouble() * 100D) / 100D;
-
-        woodMovementPenaltyReduction = c.getFloat("woodMovementPenaltyReduction", "material_traits", .10F,
-            0F, .95F, "Reduction to Wood's normal blocking movement penalty.");
-        stoneParryKnockbackBonus = c.getFloat("stoneParryKnockbackBonus", "material_traits", .20F,
-            0F, 5F, "Knockback strength added to Stone perfect parries.");
-        goldAttackSpeedBonus = c.getFloat("goldAttackSpeedBonus", "material_traits", .20F,
-            0F, 20F, "Main-hand attack speed added to Gold.");
-        diamondDebuffDurationBonusTicks = c.getInt("diamondDebuffDurationBonusTicks", "material_traits", 20,
-            0, 72000, "Ticks added to Diamond's Slowness and Vulnerable duration.");
-        steelGuardedReductionBonus = c.getFloat("steelGuardedReductionBonus", "material_traits", .05F,
-            0F, 1F, "Sustained guarded reduction added to Steel when its base guard applies.");
-
-        perfectParryDurabilityCost = c.getInt("perfectParryCost", "durability", 2, 0, 100, "Perfect-parry durability cost.");
-        guardedHitDurabilityCost = c.getInt("guardedHitCost", "durability", 1, 0, 100, "Guarded-hit durability cost.");
-        mainHandHitDurabilityCost = c.getInt("mainHandHitCost", "durability", 1, 0, 100, "Main-hand hit durability cost.");
-
-        blockAllDamage = c.getBoolean("blockAllDamage", "damage_types", false,
-            "Enable base Defender logic for everything except void and projectiles.");
-        blockDirectMelee = c.getBoolean("blockDirectMelee", "damage_types", true, "Enable direct melee.");
-        blockMagic = c.getBoolean("blockMagic", "damage_types", false, "Enable magic.");
-        blockExplosions = c.getBoolean("blockExplosions", "damage_types", false, "Enable explosions.");
-        blockFire = c.getBoolean("blockFire", "damage_types", false, "Enable fire and lava.");
-        blockFall = c.getBoolean("blockFall", "damage_types", false, "Enable fall damage.");
-        blockDrowning = c.getBoolean("blockDrowning", "damage_types", false, "Enable drowning.");
-        blockEnvironmental = c.getBoolean("blockEnvironmental", "damage_types", false, "Enable other environmental damage.");
-        blockArmorBypassing = c.getBoolean("blockArmorBypassing", "damage_types", false, "Enable armor-bypassing sources.");
-        retaliateAgainstIndirectAttacker = c.getBoolean("retaliateAgainstIndirectAttacker", "damage_types", false, "Debuff a projectile owner's living source.");
-
-        enableSpartanMaterials = c.getBoolean("enableSpartanMaterials", "compatibility", true, "Enable Bronze, Silver and Steel when available.");
-        enableDefiledLands = c.getBoolean("enableDefiledLands", "compatibility", true, "Enable Umbrium when available.");
-        enableIceAndFire = c.getBoolean("enableIceAndFire", "compatibility", true, "Enable Dragonbone and Myrmex when available.");
-        enableSRParasites = c.getBoolean("enableSRParasites", "compatibility", true, "Enable Living and Sentient when available.");
-
-        enableSilverUndeadDamage = c.getBoolean("silverUndeadDamage", "special_effects", true, "Silver adds 2 main-hand damage and deals 1 perfect-parry damage to undead.");
-        enableMyrmexCreatureDamage = c.getBoolean("myrmexCreatureDamage", "special_effects", true, "Use the native Myrmex creature bonus.");
-        enableVenomParryPoison = c.getBoolean("venomParryPoison", "special_effects", true, "Myrmex Stinger hits and perfect parries apply Poison III for ten seconds.");
-        enableElementalMainHandEffects = c.getBoolean("elementalMainHandEffects", "special_effects", true, "Native dragon-blood effects on hits.");
-        enableElementalParryEffects = c.getBoolean("elementalPerfectParryEffects", "special_effects", true, "Native dragon-blood effects on parries.");
-        enableLivingParryEffects = c.getBoolean("livingSentientParryEffects", "special_effects", true, "Immalleable and Viral parry effects.");
-
-        silverUndeadMainHandBonus = c.getFloat("silverUndeadMainHandBonus", "special_effect_values", 2F, 0F, 1024F, "Flat main-hand bonus against undead.");
-        silverUndeadParryDamage = c.getFloat("silverUndeadParryDamage", "special_effect_values", 1F, 0F, 1024F, "Silver perfect-parry damage against undead.");
-        myrmexNonArthropodBonus = c.getFloat("myrmexNonArthropodBonus", "special_effect_values", 4F, 0F, 1024F, "Flat Myrmex bonus against non-arthropods.");
-        myrmexDeathWormBonus = c.getFloat("myrmexDeathWormBonus", "special_effect_values", 4F, 0F, 1024F, "Separate native Myrmex bonus against Death Worms.");
-        venomDurationTicks = c.getInt("venomDurationTicks", "special_effect_values", 200, 1, 72000, "Myrmex Stinger poison duration.");
-        venomAmplifier = c.getInt("venomAmplifier", "special_effect_values", 2, 0, 255, "Zero-based poison amplifier; 2 is Poison III.");
-        flameDurationSeconds = c.getInt("flameDurationSeconds", "special_effect_values", 5, 0, 3600, "Flamed Defender burn duration.");
-        frozenDurationTicks = c.getInt("frozenDurationTicks", "special_effect_values", 200, 0, 72000, "Iced Defender native frozen duration.");
-        iceDebuffDurationTicks = c.getInt("iceDebuffDurationTicks", "special_effect_values", 100, 0, 72000, "Iced Defender Slowness and Mining Fatigue duration.");
-        iceDebuffAmplifier = c.getInt("iceDebuffAmplifier", "special_effect_values", 2, 0, 255, "Zero-based ice debuff amplifier; 2 is level III.");
-        dragonOpposedElementBonus = c.getFloat("dragonOpposedElementBonus", "special_effect_values", 13.5F, 0F, 1024F, "Flamed/Iced bonus against the opposed dragon.");
-        lightningDragonBonus = c.getFloat("lightningDragonBonus", "special_effect_values", 6.75F, 0F, 1024F, "Electric bonus against fire and ice dragons.");
-        elementalMainHandKnockback = c.getFloat("elementalMainHandKnockback", "special_effect_values", 1F, 0F, 20F, "Native elemental main-hand knockback strength.");
-        livingEffectDurationTicks = c.getInt("livingEffectDurationTicks", "special_effect_values", 100, 1, 72000, "Immalleable and Viral duration.");
-        immalleableAmplifier = c.getInt("immalleableAmplifier", "special_effect_values", 0, 0, 255, "Zero-based Immalleable amplifier.");
-        viralAmplifier = c.getInt("viralAmplifier", "special_effect_values", 0, 0, 255, "Zero-based Viral amplifier.");
-
-        followSrpEvolutionThreshold = c.getBoolean("followSRPThreshold", "evolution", true, "Read SRP's active HP Evolve threshold.");
-        evolutionHealthOverride = c.getInt("evolutionHealthOverride", "evolution", 50000, 1, Integer.MAX_VALUE, "Fallback/override evolution threshold.");
-        requireParasiteKills = c.getBoolean("requireParasiteKills", "evolution", true,
-            "True grants Living Defender evolution points only for SRP parasite kills; false allows all living creatures.");
-        showEvolutionProgress = c.getBoolean("showEvolutionProgress", "evolution", true, "Show Living Defender progress.");
-
-        MAIN_DAMAGE.clear();
-        OFFHAND_DAMAGE.clear();
-        OFFHAND_ATTACK_SPEED.clear();
-        for (DefenderTier tier : DefenderTier.values()) {
-            MAIN_DAMAGE.put(tier, c.get("weapon_stats", tier.id + "MainHandDamage", tier.defaultMainHandDamage(),
-                "Total main-hand damage.", 0D, 1024D).getDouble());
-            OFFHAND_DAMAGE.put(tier, c.get("weapon_stats", tier.id + "OffhandBonus", tier.offhandBonus,
-                "Flat offhand melee bonus.", 0D, 1024D).getDouble());
-            OFFHAND_ATTACK_SPEED.put(tier, c.get("weapon_stats", tier.id + "OffhandAttackSpeed",
-                tier.defaultOffhandAttackSpeed(), "Flat attack-speed bonus while equipped off hand.",
-                0D, 20D).getDouble());
-        }
-        boolean removedLegacyOptions = false;
-        if (c.hasKey("damage_types", "blockProjectiles")) {
-            c.getCategory("damage_types").remove("blockProjectiles");
-            removedLegacyOptions = true;
-        }
-        if (c.hasKey("combat", "fortificationReductionPerLevel")) {
-            c.getCategory("combat").remove("fortificationReductionPerLevel");
-            removedLegacyOptions = true;
-        }
-        if (c.hasKey("enchantments", "enableFortification")) {
-            c.getCategory("enchantments").remove("enableFortification");
-            removedLegacyOptions = true;
-        }
-        if (removedLegacyOptions || c.hasChanged()) c.save();
-    }
 }

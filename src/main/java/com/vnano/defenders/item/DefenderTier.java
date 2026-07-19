@@ -1,98 +1,39 @@
 package com.vnano.defenders.item;
 
 public enum DefenderTier {
-    WOOD("wood", 96, 1.0D, 4.0D, 15, CompatFamily.VANILLA, "ore:plankWood"),
-    STONE("stone", 160, 1.25D, 5.0D, 5, CompatFamily.VANILLA, "ore:cobblestone"),
-    GOLD("gold", 64, 1.25D, 4.0D, 22, CompatFamily.VANILLA, "ore:ingotGold"),
-    IRON("iron", 320, 2.0D, 6.0D, 14, CompatFamily.VANILLA, "ore:ingotIron"),
-    DIAMOND("diamond", 960, 3.0D, 7.0D, 10, CompatFamily.VANILLA, "ore:gemDiamond"),
-
-    SILVER("silver", 460, 2.25D, 5.5D, 16, CompatFamily.SPARTAN, "ore:ingotSilver"),
-    BRONZE("bronze", 200, 1.5D, 6.0D, 12, CompatFamily.SPARTAN, "ore:ingotBronze"),
-    STEEL("steel", 480, 2.5D, 6.5D, 14, CompatFamily.SPARTAN, "ore:ingotSteel"),
-    UMBRIUM("umbrium", 320, 2.0D, 6.0D, 20, CompatFamily.DEFILED, "defiledlands:umbrium_ingot"),
-
-    DRAGONBONE("dragonbone", 1660, 3.25D, 8.0D, 22, CompatFamily.ICE_AND_FIRE, "iceandfire:dragonbone"),
-    FLAMED_DRAGONBONE("flamed_dragonbone", 2000, 3.5D, 9.5D, 22, CompatFamily.FIRE_DRAGONBONE, "iceandfire:dragonbone"),
-    ICED_DRAGONBONE("iced_dragonbone", 2000, 3.5D, 9.5D, 22, CompatFamily.ICE_DRAGONBONE, "iceandfire:dragonbone"),
-    ELECTRIC_DRAGONBONE("electric_dragonbone", 2000, 3.5D, 9.5D, 22, CompatFamily.LIGHTNING_DRAGONBONE, "iceandfire:dragonbone"),
-
-    DESERT_MYRMEX("desert_myrmex", 600, 2.5D, 5.0D, 8, CompatFamily.DESERT_MYRMEX, "iceandfire:myrmex_desert_chitin"),
-    JUNGLE_MYRMEX("jungle_myrmex", 600, 2.5D, 5.0D, 8, CompatFamily.JUNGLE_MYRMEX, "iceandfire:myrmex_jungle_chitin"),
-    DESERT_VENOM("desert_venom", 600, 2.5D, 5.0D, 8, CompatFamily.DESERT_MYRMEX, "iceandfire:myrmex_desert_chitin"),
-    JUNGLE_VENOM("jungle_venom", 600, 2.5D, 5.0D, 8, CompatFamily.JUNGLE_MYRMEX, "iceandfire:myrmex_jungle_chitin"),
-
-    LIVING("living", 1000, 4.0D, 15.0D, 1, CompatFamily.SRP, "srparasites:infectious_blade_fragment"),
-    SENTIENT("sentient", 1000, 4.5D, 20.0D, 1, CompatFamily.SRP, "srparasites:infectious_blade_fragment");
-
-    public enum CompatFamily {
-        VANILLA, SPARTAN, DEFILED, ICE_AND_FIRE,
-        FIRE_DRAGONBONE, ICE_DRAGONBONE, LIGHTNING_DRAGONBONE,
-        DESERT_MYRMEX, JUNGLE_MYRMEX, SRP
+    WOOD("wood",96,1,3,15,null), STONE("stone",160,1.25,4,5,null),
+    COPPER("copper",224,1.5,4.5,12,null), GOLD("gold",64,1.25,3,22,null),
+    IRON("iron",320,2,4.5,14,null), DIAMOND("diamond",960,3,5.5,10,null),
+    NETHERITE("netherite",1280,3.5,6.5,15,null),
+    SILVER("silver",460,2.25,4,16,"iceandfire"),
+    BRONZE("bronze",200,1.5,4.5,12,"spartanweaponry"),
+    STEEL("steel",480,2.5,5,14,"spartanweaponry"),
+    UMBRIUM("umbrium",320,2,4.5,20,"defiled_lands_preborn"),
+    DRAGONBONE("dragonbone",1660,3.25,6,22,"iceandfire"),
+    FLAMED_DRAGONBONE("flamed_dragonbone",2000,3.5,7.5,22,"iceandfire"),
+    ICED_DRAGONBONE("iced_dragonbone",2000,3.5,7.5,22,"iceandfire"),
+    ELECTRIC_DRAGONBONE("electric_dragonbone",2000,3.5,7.5,22,"iceandfire"),
+    DESERT_MYRMEX("desert_myrmex",600,2.5,4,8,"iceandfire"),
+    JUNGLE_MYRMEX("jungle_myrmex",600,2.5,4,8,"iceandfire"),
+    DESERT_VENOM("desert_venom",600,2.5,4,8,"iceandfire"),
+    JUNGLE_VENOM("jungle_venom",600,2.5,4,8,"iceandfire"),
+    LIVING("living",1000,4,12,1,"srp_spartans"),
+    SENTIENT("sentient",1000,4.5,16,1,"srp_spartans");
+    public final String id, requiredMod; public final int durability, enchantability;
+    public final double offhandBonus, mainHandDamage;
+    DefenderTier(String id,int durability,double offhandBonus,double mainHandDamage,int enchantability,String requiredMod){
+        this.id=id;this.durability=durability;this.offhandBonus=offhandBonus;this.mainHandDamage=mainHandDamage;this.enchantability=enchantability;this.requiredMod=requiredMod;
     }
-
-    public final String id;
-    public final int durability;
-    public final double offhandBonus;
-    public final double swordDamage;
-    public final int enchantability;
-    public final CompatFamily family;
-    public final String repairIngredient;
-
-    DefenderTier(String id, int durability, double offhandBonus, double swordDamage,
-                 int enchantability, CompatFamily family, String repairIngredient) {
-        this.id = id;
-        this.durability = durability;
-        this.offhandBonus = offhandBonus;
-        this.swordDamage = swordDamage;
-        this.enchantability = enchantability;
-        this.family = family;
-        this.repairIngredient = repairIngredient;
-    }
-
-    public double defaultMainHandDamage() {
-        return Math.floor(swordDamage * 0.80D * 2.0D) / 2.0D;
-    }
-
-    public double defaultOffhandAttackSpeed() {
-        switch (this) {
-            case WOOD: return 0.15D;
-            case STONE: return 0.05D;
-            case GOLD: return 0.25D;
-            case BRONZE:
-            case IRON:
-            case DRAGONBONE:
-            case FLAMED_DRAGONBONE:
-            case ICED_DRAGONBONE:
-            case ELECTRIC_DRAGONBONE:
-                return 0.10D;
-            case UMBRIUM:
-            case DIAMOND:
-            case LIVING:
-                return 0.15D;
-            case SILVER:
-            case DESERT_MYRMEX:
-            case JUNGLE_MYRMEX:
-            case DESERT_VENOM:
-            case JUNGLE_VENOM:
-            case SENTIENT:
-                return 0.20D;
-            case STEEL: return 0.05D;
-            default: return 0.10D;
-        }
-    }
-
-    public boolean isMyrmex() {
-        return this == DESERT_MYRMEX || this == JUNGLE_MYRMEX
-            || this == DESERT_VENOM || this == JUNGLE_VENOM;
-    }
-
-    public boolean isVenom() {
-        return this == DESERT_VENOM || this == JUNGLE_VENOM;
-    }
-
-    public boolean isDragonBlooded() {
-        return this == FLAMED_DRAGONBONE || this == ICED_DRAGONBONE
-            || this == ELECTRIC_DRAGONBONE;
+    public boolean isMyrmex(){return name().contains("MYRMEX")||name().contains("VENOM");}
+    public boolean isVenom(){return this==DESERT_VENOM||this==JUNGLE_VENOM;}
+    public boolean isDragonBlooded(){return this==FLAMED_DRAGONBONE||this==ICED_DRAGONBONE||this==ELECTRIC_DRAGONBONE;}
+    public double defaultOffhandAttackSpeed(){
+        return switch(this){
+            case WOOD, UMBRIUM, DIAMOND, LIVING -> .15;
+            case STONE, STEEL -> .05;
+            case GOLD -> .25;
+            case SILVER, DESERT_MYRMEX, JUNGLE_MYRMEX, DESERT_VENOM, JUNGLE_VENOM, SENTIENT -> .20;
+            default -> .10;
+        };
     }
 }

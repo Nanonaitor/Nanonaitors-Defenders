@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "M": {
+      "tag": "minecraft:planks"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    " M",
+    "SM",
+    " M"
+  ],
+  "result": {
+    "item": "defenders:defender_wood"
+  },
+  "show_notification": true
+}

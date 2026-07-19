@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:crafting_shaped",
-  "pattern": [" M", "SM", " M"],
-  "key": {
-    "M": { "type": "forge:ore_dict", "ore": "ingotIron" },
-    "S": { "item": "minecraft:stick" }
-  },
-  "result": { "item": "defenders:defender_iron" }
-}

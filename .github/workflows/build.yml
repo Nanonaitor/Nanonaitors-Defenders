@@ -12,7 +12,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '11'
+          java-version: '17'
           cache: gradle
       - name: Make Gradle wrapper executable
         run: chmod +x gradlew
@@ -20,5 +20,5 @@ jobs:
         run: ./gradlew clean build --no-daemon
       - uses: actions/upload-artifact@v4
         with:
-          name: defenders-forge-1.12.2
+          name: defenders-forge-1.20.1
           path: build/libs/*.jar

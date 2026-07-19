@@ -6,7 +6,7 @@
   "overrides": [
     {
       "predicate": {
-        "blocking": 1
+        "defenders:blocking": 1
       },
       "model": "defenders:item/defender_umbrium_blocking"
     }

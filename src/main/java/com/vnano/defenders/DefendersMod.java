@@ -1,25 +1,28 @@
 package com.vnano.defenders;
 
 import com.vnano.defenders.config.DefenderConfig;
-import com.vnano.defenders.item.DefenderCreativeTab;
-import net.minecraft.creativetab.CreativeTabs;
+import com.vnano.defenders.registry.ModEnchantments;
+import com.vnano.defenders.registry.ModItems;
+import com.vnano.defenders.registry.ModEffects;
+import com.vnano.defenders.registry.ModTabs;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@Mod(
-    modid = DefendersMod.MOD_ID,
-    name = DefendersMod.NAME,
-    version = DefendersMod.VERSION,
-    acceptedMinecraftVersions = "[1.12.2]"
-)
+@Mod(DefendersMod.MOD_ID)
 public final class DefendersMod {
     public static final String MOD_ID = "defenders";
-    public static final String NAME = "Defenders";
-    public static final String VERSION = "1.1.1";
-    public static final CreativeTabs CREATIVE_TAB = new DefenderCreativeTab();
 
-    @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        DefenderConfig.load(event.getSuggestedConfigurationFile());
+    public DefendersMod(FMLJavaModLoadingContext context) {
+        IEventBus modBus = context.getModEventBus();
+        ModItems.ITEMS.register(modBus);
+        ModEnchantments.ENCHANTMENTS.register(modBus);
+        ModEffects.EFFECTS.register(modBus);
+        ModTabs.TABS.register(modBus);
+        context.registerConfig(ModConfig.Type.COMMON, DefenderConfig.SPEC);
+        MinecraftForge.EVENT_BUS.register(this);
     }
+
 }
