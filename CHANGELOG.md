@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.1.1 - Combat and compatibility fixes
+
+- Added configurable, material-specific flat attack-speed bonuses while a
+  Defender is equipped off hand.
+- Added a dedicated Defenders creative tab with the Diamond Defender as its icon.
+- Added every enabled Defender enchantment book to the creative tab.
+- Restricted enchantment descriptions to enchanted books so applied Defenders
+  retain compact tooltips.
+- Added normal shield-disabling weapon behavior without permitting ranged blocks.
+- Added held-attack compatibility for Better Survival Nunchaku and Everything
+  Nunchaku while entering, holding, and leaving Defender guard.
+- Fixed guarded attacks to preserve full main-hand damage and combat hooks.
+- Added uninterrupted block-breaking while guarding.
+- Fixed normal mining being paused after lowering a Defender.
+- Fixed raising a Defender again during the same uninterrupted mining action.
+- Synchronizes Better Survival's spinning state so Nunchaku hits remain valid
+  while a Defender is actively guarding.
+
 ## 1.1.0 - Enchantments and modpack configuration
 
 - Added distinct configurable material traits: faster Wood guarding, stronger

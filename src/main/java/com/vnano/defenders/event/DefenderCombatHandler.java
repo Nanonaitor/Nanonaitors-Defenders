@@ -93,6 +93,20 @@ public final class DefenderCombatHandler {
         int effectiveParryWindow = DefenderConfig.parryWindowTicks
             + reflexes * DefenderConfig.reflexesWindowTicksPerLevel;
 
+        if (blocking && DefenderConfig.allowShieldDisabling
+            && isDirectMelee(event.getSource())
+            && event.getSource().getTrueSource() instanceof EntityLivingBase) {
+            EntityLivingBase attacker = (EntityLivingBase) event.getSource().getTrueSource();
+            ItemStack weapon = attacker.getHeldItemMainhand();
+            if (!weapon.isEmpty() && weapon.getItem().canDisableShield(
+                weapon, defenderStack, player, attacker)) {
+                player.disableShield(true);
+                endBlocking(player);
+                data.removeTag(NBT_BYPASSING_VANILLA_BLOCK);
+                return;
+            }
+        }
+
         if (blocking
             && isAllowedDamage(event.getSource())
             && elapsed >= 0

@@ -10,6 +10,7 @@ import net.minecraftforge.common.config.Configuration;
 public final class DefenderConfig {
     private static final Map<DefenderTier, Double> MAIN_DAMAGE = new EnumMap<>(DefenderTier.class);
     private static final Map<DefenderTier, Double> OFFHAND_DAMAGE = new EnumMap<>(DefenderTier.class);
+    private static final Map<DefenderTier, Double> OFFHAND_ATTACK_SPEED = new EnumMap<>(DefenderTier.class);
 
     public static int parryWindowTicks = 20, parryRecoveryTicks = 10, debuffDurationTicks = 40;
     public static int perfectParryDurabilityCost = 2, guardedHitDurabilityCost = 1, mainHandHitDurabilityCost = 1;
@@ -29,6 +30,8 @@ public final class DefenderConfig {
     public static int sixthSenseGlowDurationTicks = 100;
     public static double mainHandAttackSpeed = 1.8D;
     public static boolean allowAttackingWhileBlocking = true;
+    public static boolean allowShieldDisabling = true;
+    public static boolean allowContinuousAttacksWhileBlocking = true;
     public static boolean enableAllDefenderEnchantments = true;
     public static boolean enableFootwork = true;
     public static boolean enableReprisal = true, enableFinesse = true;
@@ -65,6 +68,11 @@ public final class DefenderConfig {
 
     public static double getOffhandDamage(DefenderTier tier) {
         return OFFHAND_DAMAGE.containsKey(tier) ? OFFHAND_DAMAGE.get(tier) : tier.offhandBonus;
+    }
+
+    public static double getOffhandAttackSpeed(DefenderTier tier) {
+        return OFFHAND_ATTACK_SPEED.containsKey(tier)
+            ? OFFHAND_ATTACK_SPEED.get(tier) : tier.defaultOffhandAttackSpeed();
     }
 
     public static double getMainHandAttackSpeed(DefenderTier tier) {
@@ -147,6 +155,10 @@ public final class DefenderConfig {
         enableDeflection = c.getBoolean("enableDeflection", "enchantments", true, "Enable Deflection generation and effects.");
         enableSixthSense = c.getBoolean("enableSixthSense", "enchantments", true, "Enable 6th Sense generation and effects.");
         allowAttackingWhileBlocking = c.getBoolean("allowAttackingWhileBlocking", "combat", true, "Allow attacks while blocking.");
+        allowShieldDisabling = c.getBoolean("allowShieldDisabling", "combat", true,
+            "Allow shield-disabling weapons to disable an actively blocking Defender.");
+        allowContinuousAttacksWhileBlocking = c.getBoolean("allowContinuousAttacksWhileBlocking", "compatibility", true,
+            "Keep Better Survival and Everything Nunchaku held attacks active while blocking.");
         finesseDamagePerLevel = c.getFloat("finesseDamagePerLevel", "combat", .5F, 0F, 1024F,
             "Flat melee damage added per Finesse level while its Defender is equipped off hand.");
         mainHandAttackSpeed = Math.round(c.get("weapon_stats", "mainHandAttackSpeed", 1.8D,
@@ -216,11 +228,15 @@ public final class DefenderConfig {
 
         MAIN_DAMAGE.clear();
         OFFHAND_DAMAGE.clear();
+        OFFHAND_ATTACK_SPEED.clear();
         for (DefenderTier tier : DefenderTier.values()) {
             MAIN_DAMAGE.put(tier, c.get("weapon_stats", tier.id + "MainHandDamage", tier.defaultMainHandDamage(),
                 "Total main-hand damage.", 0D, 1024D).getDouble());
             OFFHAND_DAMAGE.put(tier, c.get("weapon_stats", tier.id + "OffhandBonus", tier.offhandBonus,
                 "Flat offhand melee bonus.", 0D, 1024D).getDouble());
+            OFFHAND_ATTACK_SPEED.put(tier, c.get("weapon_stats", tier.id + "OffhandAttackSpeed",
+                tier.defaultOffhandAttackSpeed(), "Flat attack-speed bonus while equipped off hand.",
+                0D, 20D).getDouble());
         }
         boolean removedLegacyOptions = false;
         if (c.hasKey("damage_types", "blockProjectiles")) {

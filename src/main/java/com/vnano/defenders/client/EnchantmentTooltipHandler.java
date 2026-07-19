@@ -7,6 +7,7 @@ import java.util.Map;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,9 +23,10 @@ public final class EnchantmentTooltipHandler {
 
     @SubscribeEvent
     public static void onTooltip(ItemTooltipEvent event) {
-        // Enchantment Descriptions reads the same localization keys itself.
-        // Keep this handler only as the fallback when that mod is absent.
-        if (Loader.isModLoaded("enchdesc")) return;
+        // Descriptions belong on enchanted books only, never on an applied item.
+        // Enchantment Descriptions follows the same rule; this is the fallback.
+        if (Loader.isModLoaded("enchdesc")
+            || !(event.getItemStack().getItem() instanceof ItemEnchantedBook)) return;
         Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(event.getItemStack());
         addDescription(event, enchantments, ModEnchantments.FOOTWORK, "enchantment.defenders.footwork.desc");
         addDescription(event, enchantments, ModEnchantments.REPRISAL, "enchantment.defenders.reprisal.desc");

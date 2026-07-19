@@ -15,6 +15,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,6 +36,7 @@ public final class DefenderClientInput {
         "isHittingBlock", "field_78778_j");
 
     private static MiningState preservedMining;
+    private static boolean useItemWasDown;
 
     private DefenderClientInput() {}
 
@@ -65,11 +67,12 @@ public final class DefenderClientInput {
         player.swingArm(EnumHand.MAIN_HAND);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         if (!DefenderConfig.allowAttackingWhileBlocking) return;
         Minecraft minecraft = Minecraft.getMinecraft();
         if (event.phase == TickEvent.Phase.START) {
+            handleGuardPressedWhileMining(minecraft);
             preserveMiningState(minecraft);
             return;
         }
@@ -79,8 +82,21 @@ public final class DefenderClientInput {
         RayTraceResult hit = minecraft.objectMouseOver;
         if (player == null || minecraft.currentScreen != null
             || !minecraft.gameSettings.keyBindAttack.isKeyDown()
-            || !DefenderCombatHandler.isBlockingWithDefender(player)
-            || hit == null || hit.typeOfHit != RayTraceResult.Type.BLOCK) return;
+            || !DefenderCombatHandler.isBlockingWithDefender(player) || hit == null) return;
+
+        if (DefenderConfig.allowContinuousAttacksWhileBlocking
+            && hit.typeOfHit == RayTraceResult.Type.ENTITY
+            && hit.entityHit != null
+            && player.getCooledAttackStrength(0.5F) >= 1.0F
+            && ContinuousAttackCompat.shouldContinue(
+                player.getHeldItemMainhand().getItem(), hit.entityHit, player)) {
+            ContinuousAttackCompat.prepareAttack(player);
+            minecraft.playerController.attackEntity(player, hit.entityHit);
+            player.swingArm(EnumHand.MAIN_HAND);
+            return;
+        }
+
+        if (hit.typeOfHit != RayTraceResult.Type.BLOCK) return;
 
         if (minecraft.playerController.onPlayerDamageBlock(hit.getBlockPos(), hit.sideHit)) {
             minecraft.effectRenderer.addBlockHitEffects(hit.getBlockPos(), hit.sideHit);
@@ -88,10 +104,32 @@ public final class DefenderClientInput {
         }
     }
 
+    private static void handleGuardPressedWhileMining(Minecraft minecraft) {
+        boolean useItemDown = minecraft.gameSettings.keyBindUseItem.isKeyDown();
+        boolean newlyPressed = useItemDown && !useItemWasDown;
+        useItemWasDown = useItemDown;
+
+        EntityPlayer player = minecraft.player;
+        if (!newlyPressed || player == null || minecraft.playerController == null
+            || minecraft.world == null || minecraft.currentScreen != null
+            || !minecraft.gameSettings.keyBindAttack.isKeyDown()
+            || DefenderCombatHandler.isBlockingWithDefender(player)
+            || !(player.getHeldItemOffhand().getItem() instanceof ItemDefender)) return;
+
+        RayTraceResult hit = minecraft.objectMouseOver;
+        if (hit == null || hit.typeOfHit != RayTraceResult.Type.BLOCK) return;
+
+        // A fresh Use Item press is swallowed by the 1.12 input path while the
+        // attack key remains held on a block. Dispatch the ordinary off-hand
+        // action from the key edge so the Defender can be raised repeatedly.
+        minecraft.playerController.processRightClick(
+            minecraft.player, minecraft.world, EnumHand.OFF_HAND);
+    }
+
     private static void preserveMiningState(Minecraft minecraft) {
         if (preservedMining != null || minecraft.player == null || minecraft.playerController == null
             || !minecraft.gameSettings.keyBindAttack.isKeyDown()
-            || !(minecraft.player.getHeldItemOffhand().getItem() instanceof ItemDefender)) return;
+            || !DefenderCombatHandler.isBlockingWithDefender(minecraft.player)) return;
         RayTraceResult hit = minecraft.objectMouseOver;
         if (hit == null || hit.typeOfHit != RayTraceResult.Type.BLOCK) return;
 

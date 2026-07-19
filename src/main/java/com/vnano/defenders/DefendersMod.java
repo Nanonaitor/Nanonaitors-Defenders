@@ -1,6 +1,8 @@
 package com.vnano.defenders;
 
 import com.vnano.defenders.config.DefenderConfig;
+import com.vnano.defenders.item.DefenderCreativeTab;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -13,7 +15,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 public final class DefendersMod {
     public static final String MOD_ID = "defenders";
     public static final String NAME = "Defenders";
-    public static final String VERSION = "1.1.0";
+    public static final String VERSION = "1.1.1";
+    public static final CreativeTabs CREATIVE_TAB = new DefenderCreativeTab();
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {

@@ -54,6 +54,34 @@ public enum DefenderTier {
         return Math.floor(swordDamage * 0.80D * 2.0D) / 2.0D;
     }
 
+    public double defaultOffhandAttackSpeed() {
+        switch (this) {
+            case WOOD: return 0.15D;
+            case STONE: return 0.05D;
+            case GOLD: return 0.25D;
+            case BRONZE:
+            case IRON:
+            case DRAGONBONE:
+            case FLAMED_DRAGONBONE:
+            case ICED_DRAGONBONE:
+            case ELECTRIC_DRAGONBONE:
+                return 0.10D;
+            case UMBRIUM:
+            case DIAMOND:
+            case LIVING:
+                return 0.15D;
+            case SILVER:
+            case DESERT_MYRMEX:
+            case JUNGLE_MYRMEX:
+            case DESERT_VENOM:
+            case JUNGLE_VENOM:
+            case SENTIENT:
+                return 0.20D;
+            case STEEL: return 0.05D;
+            default: return 0.10D;
+        }
+    }
+
     public boolean isMyrmex() {
         return this == DESERT_MYRMEX || this == JUNGLE_MYRMEX
             || this == DESERT_VENOM || this == JUNGLE_VENOM;

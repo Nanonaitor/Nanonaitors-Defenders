@@ -26,6 +26,7 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.creativetab.CreativeTabs;
+import com.vnano.defenders.DefendersMod;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -38,6 +39,7 @@ public final class ItemDefender extends Item {
     private static final DecimalFormat VALUE_FORMAT = new DecimalFormat("0.##",
         DecimalFormatSymbols.getInstance(Locale.ROOT));
     private static final UUID ATTACK_BONUS_UUID = UUID.fromString("3a9472fd-19f1-48be-a2b0-746796e68f51");
+    private static final UUID ATTACK_SPEED_BONUS_UUID = UUID.fromString("bf923046-29e0-4a1b-9c48-40d41d52ff25");
     private static final ResourceLocation ADVANCED_MENDING =
         new ResourceLocation("somanyenchantments", "advancedmending");
     private final DefenderTier tier;
@@ -48,7 +50,7 @@ public final class ItemDefender extends Item {
         setUnlocalizedName("defenders.defender_" + tier.id);
         setMaxStackSize(1);
         setMaxDamage(tier.durability);
-        setCreativeTab(CreativeTabs.COMBAT);
+        setCreativeTab(DefendersMod.CREATIVE_TAB);
         addPropertyOverride(new ResourceLocation("blocking"), (stack, world, entity) ->
             entity != null && entity.isHandActive() && entity.getActiveItemStack() == stack ? 1.0F : 0.0F);
     }
@@ -92,6 +94,9 @@ public final class ItemDefender extends Item {
         if (slot == EntityEquipmentSlot.OFFHAND) {
             modifiers.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(),
                 new AttributeModifier(ATTACK_BONUS_UUID, "Defender melee bonus", DefenderConfig.getOffhandDamage(tier), 0));
+            modifiers.put(SharedMonsterAttributes.ATTACK_SPEED.getName(),
+                new AttributeModifier(ATTACK_SPEED_BONUS_UUID, "Defender attack speed bonus",
+                    DefenderConfig.getOffhandAttackSpeed(tier), 0));
         } else if (slot == EntityEquipmentSlot.MAINHAND) {
             modifiers.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(),
                 new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", DefenderConfig.getMainHandDamage(tier) - 1.0D, 0));
@@ -161,7 +166,7 @@ public final class ItemDefender extends Item {
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
         tooltip.add(TextFormatting.AQUA + "Parry within 1 second of blocking.");
         tooltip.add(TextFormatting.BLUE + "Reduce Melee Damage When Blocking");
-        tooltip.add(TextFormatting.DARK_GRAY + "Cannot perfect-parry ranged damage");
+        tooltip.add(TextFormatting.DARK_GRAY + "Cannot parry ranged damage");
         addMaterialEffectTooltips(tooltip);
         if (tier == DefenderTier.LIVING && DefenderConfig.showEvolutionProgress && stack.hasTagCompound()) {
             tooltip.add(TextFormatting.BLUE + "--->" + stack.getTagCompound().getInteger("srpkills"));

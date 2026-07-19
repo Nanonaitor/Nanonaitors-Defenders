@@ -17,6 +17,7 @@ item.defenders.defender_desert_venom.name=Desert Myrmex Stinger Defender
 item.defenders.defender_jungle_venom.name=Jungle Myrmex Stinger Defender
 item.defenders.defender_living.name=Living Defender
 item.defenders.defender_sentient.name=Sentient Defender
+itemGroup.defenders=Defenders
 enchantment.defenders.footwork=Footwork
 enchantment.defenders.reprisal=Reprisal
 enchantment.defenders.finesse=Finesse

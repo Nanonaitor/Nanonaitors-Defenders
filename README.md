@@ -4,7 +4,7 @@
   <img src="media/defenders-logo.png" alt="Defenders logo" width="256">
 </p>
 
-Version 1.1.0 of Nanonaitor's off-hand melee Defenders. The same JAR runs with
+Version 1.1.1 of Nanonaitor's off-hand melee Defenders. The same JAR runs with
 vanilla Forge or enables its optional RLCraft/Dregora materials when their mods
 and ingredients are present.
 
@@ -17,31 +17,35 @@ and ingredients are present.
 - Later permitted hits are reduced by 30% and cost 1 durability.
 - Only direct melee damage is permitted by default. Projectiles can never be
   perfectly parried. The config can separately enable magic, explosions, fire, falling, drowning, other
-  environmental sources, armor-bypassing sources, or all non-void damage.
+  environmental sources, armor-bypassing sources, or all supported non-projectile damage.
 - Blocking moves at 50% normal walking speed and still permits main-hand attacks.
+- Better Survival Nunchaku and Everything Nunchaku held attacks continue while
+  entering, holding, or leaving Defender guard.
+- Shield-disabling weapons can disable an active Defender just like a shield;
+  this does not allow Defenders to block ranged attacks.
 - Defenders can be used as fast, short main-hand weapons, but cannot guard from
   the main hand. A second Defender in the off hand contributes its normal bonus.
 
-## Tiers and default damage
+## Tiers and default stats
 
 Main-hand damage is 80% of the corresponding sword value, rounded down to the
 nearest 0.5. Every value and attack speed can be changed in the config.
 
-| Tier | Off-hand bonus | Main-hand damage |
-|---|---:|---:|
-| Wood | 1 | 3 |
-| Stone | 1.25 | 4 |
-| Gold | 1.25 | 3 |
-| Iron / Umbrium | 2 | 4.5 |
-| Diamond | 3 | 5.5 |
-| Silver | 2.25 | 4 |
-| Bronze | 1.5 | 4.5 |
-| Steel | 2.5 | 5 |
-| Dragonbone | 3.25 | 6 |
-| Flamed / Iced / Electric Dragonbone | 3.5 | 7.5 |
-| Desert / Jungle Myrmex and Stinger | 2.5 | 4 |
-| Living | 4 | 12 |
-| Sentient | 4.5 | 16 |
+| Tier | Off-hand damage | Off-hand attack speed | Main-hand damage |
+|---|---:|---:|---:|
+| Wood | 1 | +0.15 | 3 |
+| Stone | 1.25 | +0.05 | 4 |
+| Gold | 1.25 | +0.25 | 3 |
+| Iron | 2 | +0.10 | 4.5 |
+| Umbrium | 2 | +0.15 | 4.5 |
+| Diamond | 3 | +0.15 | 5.5 |
+| Silver | 2.25 | +0.20 | 4 |
+| Bronze | 1.5 | +0.10 | 4.5 |
+| Steel | 2.5 | +0.05 | 5 |
+| Dragonbone / dragon-blooded | 3.25 / 3.5 | +0.10 | 6 / 7.5 |
+| Desert / Jungle Myrmex and Stinger | 2.5 | +0.20 | 4 |
+| Living | 4 | +0.15 | 12 |
+| Sentient | 4.5 | +0.20 | 16 |
 
 ## Material identities
 
@@ -61,6 +65,8 @@ nearest 0.5. Every value and attack speed can be changed in the config.
 
 Material-trait bonuses have individual values in the `material_traits` config
 category. Setting a bonus to zero disables that trait without removing items.
+Every tier's flat off-hand attack-speed bonus is separately configurable in
+the `weapon_stats` category and applies to the equipped main-hand weapon.
 
 ## Optional compatibility
 
@@ -97,7 +103,7 @@ category. Setting a bonus to zero disables that trait without removing items.
   for 5 seconds.
 - Deflection cannot be combined with Reflexes or 6th Sense.
 - Unbreaking, Mending, and standard sword enchantments are supported.
-- Descriptions appear on enchanted Defenders and enchanted books.
+- Enchantment descriptions appear on enchanted books, not applied Defenders.
 - Modpack authors can add safe optional enchantment registry IDs through the
   `additionalAllowedEnchantments` configuration list.
 - A master switch and individual configuration switches can disable Defender
@@ -125,7 +131,7 @@ Use Java 11 and the supplied Gradle wrapper:
 ```
 
 The distributable JAR is created at
-`build/libs/defenders-1.12.2-1.1.0.jar`.
+`build/libs/defenders-1.12.2-1.1.1.jar`.
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
