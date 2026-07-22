@@ -1,1 +1,0 @@
-{"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:mod_loaded","modid":"iceandfire"}],"category":"combat","ingredients":[{"item":"defenders:defender_dragonbone"},{"item":"iceandfire:ice_dragon_blood"}],"result":{"item":"defenders:defender_iced_dragonbone"}}

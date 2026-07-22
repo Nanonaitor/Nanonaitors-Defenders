@@ -1,1 +1,0 @@
-{"type":"minecraft:crafting_shaped","conditions":[{"type":"forge:mod_loaded","modid":"iceandfire"}],"category":"combat","pattern":[" M","SM"," M"],"key":{"M":{"tag":"forge:ingots/silver"},"S":{"item":"minecraft:stick"}},"result":{"item":"defenders:defender_silver"}}

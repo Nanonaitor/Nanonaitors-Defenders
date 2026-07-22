@@ -1,14 +1,6 @@
 {
-  "parent": "item/handheld",
+  "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "defenders:items/defender_netherite"
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "defenders:blocking": 1
-      },
-      "model": "defenders:item/defender_netherite_blocking"
-    }
-  ]
+    "layer0": "defenders:item/defender_netherite"
+  }
 }

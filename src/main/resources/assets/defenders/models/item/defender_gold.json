@@ -1,14 +1,6 @@
 {
-  "parent": "item/handheld",
+  "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "defenders:items/defender_gold"
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "defenders:blocking": 1
-      },
-      "model": "defenders:item/defender_gold_blocking"
-    }
-  ]
+    "layer0": "defenders:item/defender_gold"
+  }
 }

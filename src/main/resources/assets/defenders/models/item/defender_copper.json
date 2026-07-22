@@ -1,14 +1,6 @@
 {
-  "parent": "item/handheld",
+  "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "defenders:items/defender_copper"
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "defenders:blocking": 1
-      },
-      "model": "defenders:item/defender_copper_blocking"
-    }
-  ]
+    "layer0": "defenders:item/defender_copper"
+  }
 }

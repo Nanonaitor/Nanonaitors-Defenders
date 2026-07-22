@@ -1,0 +1,11 @@
+{
+  "anvil_cost": 4,
+  "description": {"translate": "enchantment.defenders.finesse"},
+  "effects": {},
+  "max_cost": {"base": 35, "per_level_above_first": 12},
+  "max_level": 3,
+  "min_cost": {"base": 15, "per_level_above_first": 12},
+  "slots": ["offhand"],
+  "supported_items": "#defenders:enchantable/defender",
+  "weight": 2
+}

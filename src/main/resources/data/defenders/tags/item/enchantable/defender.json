@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "defenders:defender_wood",
+    "defenders:defender_stone",
+    "defenders:defender_copper",
+    "defenders:defender_gold",
+    "defenders:defender_iron",
+    "defenders:defender_diamond",
+    "defenders:defender_netherite"
+  ]
+}

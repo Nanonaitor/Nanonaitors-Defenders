@@ -1,7 +1,7 @@
 {
-  "parent": "item/handheld",
+  "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "defenders:items/defender_wood"
+    "layer0": "defenders:item/defender_wood"
   },
   "display": {
     "firstperson_lefthand": {

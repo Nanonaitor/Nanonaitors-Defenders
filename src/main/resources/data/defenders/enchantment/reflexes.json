@@ -1,0 +1,12 @@
+{
+  "anvil_cost": 2,
+  "description": {"translate": "enchantment.defenders.reflexes"},
+  "effects": {},
+  "exclusive_set": "#defenders:exclusive_set/reflexes",
+  "max_cost": {"base": 30, "per_level_above_first": 10},
+  "max_level": 3,
+  "min_cost": {"base": 10, "per_level_above_first": 10},
+  "slots": ["offhand"],
+  "supported_items": "#defenders:enchantable/defender",
+  "weight": 5
+}

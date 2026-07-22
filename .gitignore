@@ -1,48 +1,29 @@
-# Gradle and Forge outputs
-/.gradle/
-/build/
-/run/
-/run-data/
-/eclipse/
-/reobf/
-/mcmodsrepo/
-/src/generated/resources/.cache/
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
 
-# Minecraft development data
-/config/
-/crash-reports/
-/logs/
-/saves/
-
-# Local dependency JARs (the Gradle wrapper JAR remains tracked)
-/libs/
-
-# IDE metadata
-/.idea/
-/.settings/
-/.vscode/
-/.metadata/
-/.classpath
-/.project
-/bin/
-/out/
-*.iml
+# idea
+out
 *.ipr
 *.iws
-*.launch
+*.iml
+.idea
 
-# Logs, crash dumps, secrets, and temporary files
-*.log
-*.tmp
-*.bak
-*.class
-*.hprof
-hs_err_pid*
-.env
-.env.*
-.DS_Store
-Thumbs.db
+# gradle
+build
+.gradle
 
-# Forge MDK downloads/reference files
-/forge*changelog.txt
-/forge-mdk.zip
+# other
+eclipse
+run
+
+# Files from Forge MDK
+forge_README.txt
+forge*changelog.txt
+.toolchains/
+run/
+run-data/

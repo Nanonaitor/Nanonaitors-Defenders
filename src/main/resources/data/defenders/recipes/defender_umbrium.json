@@ -1,1 +1,0 @@
-{"type":"minecraft:crafting_shaped","conditions":[{"type":"forge:mod_loaded","modid":"defiled_lands_preborn"}],"category":"combat","pattern":[" M","SM"," M"],"key":{"M":{"item":"defiled_lands_preborn:umbrium_ingot"},"S":{"item":"minecraft:stick"}},"result":{"item":"defenders:defender_umbrium"}}

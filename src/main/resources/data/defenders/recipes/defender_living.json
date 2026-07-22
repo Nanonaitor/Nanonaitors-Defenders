@@ -1,1 +1,0 @@
-{"type":"minecraft:crafting_shaped","conditions":[{"type":"forge:mod_loaded","modid":"srp_spartans"}],"category":"combat","pattern":[" F","NS"," F"],"key":{"F":{"item":"srp_spartans:infectious_long_blade_fragment"},"N":{"item":"srp_spartans:living_nucleus"},"S":{"item":"srp_spartans:hardened_bone_pole"}},"result":{"item":"defenders:defender_living"}}

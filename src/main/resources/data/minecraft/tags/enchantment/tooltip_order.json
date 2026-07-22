@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "defenders:footwork",
+    "defenders:reprisal",
+    "defenders:finesse",
+    "defenders:reflexes",
+    "defenders:deflection",
+    "defenders:sixth_sense"
+  ]
+}
