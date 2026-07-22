@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.2 - Camera and blocking presentation fixes
+
+- Removed the brief camera FOV zoom that could occur when lowering a Defender.
+- Reduced the first-person blocking model scale and offset so Defenders no longer
+  jump uncomfortably close to the camera.
+- Preserved uninterrupted mining while raising, holding, lowering, and raising a
+  Defender again.
+- Preserved material-specific off-hand attack-speed modifiers and their standard
+  equipment tooltip display.
+
 ## 1.1.1 - Combat and compatibility fixes
 
 - Added configurable, material-specific flat attack-speed bonuses while a

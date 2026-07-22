@@ -4,7 +4,7 @@
   <img src="media/defenders-logo.png" alt="Defenders logo" width="256">
 </p>
 
-Version 1.1.1 of Nanonaitor's off-hand melee Defenders. The same JAR runs with
+Version 1.1.2 of Nanonaitor's off-hand melee Defenders. The same JAR runs with
 vanilla Forge or enables its optional RLCraft/Dregora materials when their mods
 and ingredients are present.
 
@@ -131,7 +131,7 @@ Use Java 11 and the supplied Gradle wrapper:
 ```
 
 The distributable JAR is created at
-`build/libs/defenders-1.12.2-1.1.1.jar`.
+`build/libs/defenders-1.12.2-1.1.2.jar`.
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
