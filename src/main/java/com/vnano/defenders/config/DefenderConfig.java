@@ -25,7 +25,6 @@ public final class DefenderConfig {
     public static final ForgeConfigSpec.DoubleValue BLOCK_MOVE_PENALTY;
     public static final ForgeConfigSpec.DoubleValue PARRY_SOUND_VOLUME;
     public static final ForgeConfigSpec.BooleanValue ALLOW_ATTACKING_WHILE_BLOCKING;
-    public static final ForgeConfigSpec.BooleanValue ALLOW_SHIELD_DISABLING;
     public static final ForgeConfigSpec.IntValue PARRY_DURABILITY_COST;
     public static final ForgeConfigSpec.IntValue GUARDED_DURABILITY_COST;
     public static final ForgeConfigSpec.IntValue MAINHAND_DURABILITY_COST;
@@ -80,7 +79,6 @@ public final class DefenderConfig {
         BLOCK_MOVE_PENALTY = B.defineInRange("blockingMovementPenalty", .50, 0, .95);
         PARRY_SOUND_VOLUME = B.defineInRange("perfectParrySoundVolume", .8, 0, 4);
         ALLOW_ATTACKING_WHILE_BLOCKING = B.define("allowAttackingWhileBlocking", true);
-        ALLOW_SHIELD_DISABLING = B.define("allowShieldDisabling", true);
         B.pop();
 
         B.push("durability");

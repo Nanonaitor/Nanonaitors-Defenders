@@ -1,21 +1,15 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "equipment",
-  "key": {
-    "M": {
-      "item": "minecraft:netherite_ingot"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:netherite_ingot"
   },
-  "pattern": [
-    " M",
-    "SM",
-    " M"
-  ],
+  "base": {
+    "item": "defenders:defender_diamond"
+  },
   "result": {
     "item": "defenders:defender_netherite"
   },
-  "show_notification": true
+  "template": {
+    "item": "minecraft:netherite_upgrade_smithing_template"
+  }
 }

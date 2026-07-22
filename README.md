@@ -4,7 +4,7 @@
   <img src="src/main/resources/assets/defenders/logo.png" alt="Nanonaitor's Defenders logo" width="256">
 </p>
 
-Version 1.1.1 of Nanonaitor's off-hand melee Defenders, ported to Minecraft
+Version 1.1.2 of Nanonaitor's off-hand melee Defenders, ported to Minecraft
 1.20.1 and Forge 47.4.18. Optional materials and effects activate only when
 their source mods are installed.
 
@@ -21,7 +21,7 @@ their source mods are installed.
   can be raised or lowered without releasing the attack/mining key.
 - Forgotten Nunchakus held attacks continue while entering, holding, and leaving
   Defender guard when that optional mod is installed.
-- Shield-disabling weapons can disable an active Defender.
+- Defender guard cannot be disabled by axe-style shield-breaking attacks.
 - Defenders work as fast, short main-hand weapons but only guard from the off hand.
 
 ## Tiers and default stats
@@ -112,7 +112,7 @@ Use Java 17 and the supplied Gradle wrapper:
 ```
 
 The distributable JAR is created at
-`build/libs/defenders-1.20.1-1.1.1.jar`.
+`build/libs/defenders-1.20.1-1.1.2.jar`.
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes.
 

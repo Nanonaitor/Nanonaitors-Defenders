@@ -6,9 +6,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.EntityHitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin {
@@ -17,6 +20,24 @@ public abstract class MinecraftMixin {
             && DefenderConfig.ALLOW_ATTACKING_WHILE_BLOCKING.get()
             && player.getUsedItemHand() == InteractionHand.OFF_HAND
             && player.getOffhandItem().getItem() instanceof ItemDefender;
+    }
+
+    @Inject(method = "startUseItem", at = @At("HEAD"), cancellable = true)
+    private void defenders$prioritizeOffhandGuard(CallbackInfo callback) {
+        Minecraft minecraft = (Minecraft) (Object) this;
+        LocalPlayer player = minecraft.player;
+        if (player == null || minecraft.gameMode == null || player.isUsingItem()
+            || !(player.getOffhandItem().getItem() instanceof ItemDefender)) return;
+
+        // Entity interaction and main-hand use normally run before off-hand use.
+        // Give the Defender priority when a target would swallow the input, and
+        // when the main hand is another Defender so it cannot emit a fake swing.
+        boolean targetInReach = minecraft.hitResult instanceof EntityHitResult;
+        boolean dualDefenders = player.getMainHandItem().getItem() instanceof ItemDefender;
+        if (!targetInReach && !dualDefenders) return;
+
+        minecraft.gameMode.useItem(player, InteractionHand.OFF_HAND);
+        callback.cancel();
     }
 
     @Redirect(method = "handleKeybinds", at = @At(value = "INVOKE",

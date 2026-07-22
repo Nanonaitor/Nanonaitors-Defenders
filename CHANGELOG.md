@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.1.2 - Guard reliability and Netherite progression
+
+- Made Defender guard immune to axe-style shield disabling.
+- Ensured an off-hand Defender can begin guarding while an entity is targeted
+  within interaction range.
+- Removed the erroneous main-hand swing sound when guarding with a Defender in
+  each hand.
+- Restored vanilla Netherite progression: combine a Netherite Upgrade Smithing
+  Template, Diamond Defender, and Netherite Ingot in a smithing table.
+- Preserved attacking, continuous mining, and Forgotten Nunchakus compatibility
+  while guarding.
+
 ## 1.1.1 - Initial Forge 1.20.1 release
 
 - Ported the complete Defender combat system to Minecraft 1.20.1 and Forge 47.4.18.

@@ -84,17 +84,6 @@ public final class CombatEvents {
         int deflection = ModEnchantments.level(ModEnchantments.DEFLECTION, defender);
         int sixthSense = ModEnchantments.level(ModEnchantments.SIXTH_SENSE, defender);
 
-        if (blocking && DefenderConfig.ALLOW_SHIELD_DISABLING.get() && melee
-            && event.getSource().getEntity() instanceof LivingEntity attacker) {
-            ItemStack weapon = attacker.getMainHandItem();
-            if (!weapon.isEmpty() && weapon.getItem().canDisableShield(weapon, defender, player, attacker)) {
-                player.disableShield(true);
-                endBlocking(player);
-                data.remove(BYPASSING_VANILLA_BLOCK);
-                return;
-            }
-        }
-
         long elapsed = now - data.getLong(START);
         int parryWindow = DefenderConfig.PARRY_TICKS.get() + reflexes * DefenderConfig.REFLEXES_TICKS_PER_LEVEL.get();
         if (blocking && allowedDamage(event.getSource()) && elapsed >= 0 && elapsed <= parryWindow
